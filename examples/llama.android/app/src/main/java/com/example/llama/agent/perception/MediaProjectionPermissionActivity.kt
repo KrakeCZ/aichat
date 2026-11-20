@@ -3,9 +3,7 @@ package com.example.llama.agent.perception
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.media.projection.MediaProjectionConfig
 import android.media.projection.MediaProjectionManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 
@@ -81,19 +79,8 @@ class MediaProjectionPermissionActivity : Activity() {
         }
 
         try {
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
             val mediaProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-            // Android 14/15/16 (API 34+): Force full-screen default display capture instead of
-            // Partial Screen Sharing ("Single app"), which otherwise blacks out all other apps
-            // and blocks system audio capture like DRM/FLAG_SECURE.
-            val captureIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                mediaProjectionManager.createScreenCaptureIntent(
-                    MediaProjectionConfig.createConfigForDefaultDisplay()
-                )
-            } else {
-                mediaProjectionManager.createScreenCaptureIntent()
-            }
-            startActivityForResult(captureIntent, REQUEST_CODE)
+            startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(), REQUEST_CODE)
         } catch (e: Exception) {
             Log.e(TAG, "❌ Nelze spustit vytvoření ScreenCaptureIntent: ${e.message}")
             onResultCallback?.invoke(Activity.RESULT_CANCELED, null)
