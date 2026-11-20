@@ -1,0 +1,3 @@
+ggml/src/ggml-vulkan/topk_moe.comp.cpp: \
+  C:/SS24_V3_OK_preAgent_/ggml/src/ggml-vulkan/vulkan-shaders/topk_moe.comp \
+  C:/SS24_V3_OK_preAgent_/ggml/src/ggml-vulkan/vulkan-shaders/types.glsl

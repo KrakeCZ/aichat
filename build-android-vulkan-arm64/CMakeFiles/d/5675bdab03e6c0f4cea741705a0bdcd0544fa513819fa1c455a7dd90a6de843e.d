@@ -1,0 +1,4 @@
+ggml/src/ggml-vulkan/count_equal.comp.cpp: \
+  C:/SS24_V3_OK_preAgent_/ggml/src/ggml-vulkan/vulkan-shaders/count_equal.comp \
+  C:/SS24_V3_OK_preAgent_/ggml/src/ggml-vulkan/vulkan-shaders/types.glsl \
+  C:/SS24_V3_OK_preAgent_/ggml/src/ggml-vulkan/vulkan-shaders/generic_head.glsl

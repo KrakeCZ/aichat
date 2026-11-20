@@ -1,0 +1,2 @@
+ggml/src/ggml-vulkan/gated_delta_net.comp.cpp: \
+  C:/SS24_V3_OK_preAgent_/ggml/src/ggml-vulkan/vulkan-shaders/gated_delta_net.comp
