@@ -2,16 +2,16 @@
 OPEN-SOURCE/ MIT license ..
 
 ** ENCYKLOPEDIA OF CODE ** 👇💻📲📚
-https://krakecz.github.io/AIchat-Android-Local-AI-Agent-/
+[https://krakecz.github.io/aichat/](https://krakecz.github.io/aichat/)
 
 examples/llama.android PATH of 
  local AI for android here 👇
 
-https://github.com/KrakeCZ/AIchat-Android-Local-AI-Agent-/tree/main/examples/llama.android
+https://github.com/KrakeCZ/aichat/tree/main/examples/llama.android
 
 early-access -> really early.. 
 kotlin layer find here👇
-https://github.com/KrakeCZ/AIchat-Android-Local-AI-Agent-/tree/main/examples/llama.android/app/src/main/java/com/example/llama
+https://github.com/KrakeCZ/aichat/tree/main/examples/llama.android/app/src/main/java/com/example/llama
 
 **************************************************************************************************************
 **************************************************************************************************************
@@ -37,7 +37,7 @@ An advanced, fully on-device AI Agent for Android. This application acts as a sm
 
 [![Platform: Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://android.com)
 [![Offline First](https://img.shields.io/badge/Offline-100%25-blue.svg)](#privacy)
-[![Build Android APK](https://github.com/KrakeCZ/AIchat-Android-Local-AI-Agent-/actions/workflows/Build_debug_relase_APK.yml/badge.svg)](https://github.com/KrakeCZ/AIchat-Android-Local-AI-Agent-/actions/workflows/Build_debug_relase_APK.yml)
+[![Build Android APK](https://github.com/KrakeCZ/AIchat/actions/workflows/Build_debug_relase_APK.yml/badge.svg)](https://github.com/KrakeCZ/aichat/actions/workflows/Build_debug_relase_APK.yml)
 
 Android local AI Agent is a comprehensive, open-source assistive platform for Android that runs entirely locally without the need for cloud connectivity [1]. The application combines the power of local LLMs (Large Language Models), Computer Vision, audio processing, and advanced eye tracking (IrisMotion) to enable fully autonomous and hands-free device control [2, 3] in build.. **NOT AUTONOMOUS**
 ​The project is designed as an "Assistive Technology" and places absolute emphasis on user data security. 
@@ -63,7 +63,7 @@ The project is designed as an "Assistive Technology" and places absolute emphasi
  * **Cascading Fallback:** Support for MediaPipe LLM (LiteRT bundle) and Google AICore (Gemini Nano) models as fallbacks for devices with varying hardware capabilities [7, 8].
  * **Multimodality:** The agent can process visual inputs (screen captures or live camera feed) using visual models [5, 9].
 ### 👁️ IrisMotion (Hands-Free Eye Control)👇
-https://github.com/KrakeCZ/AIchat-Android-Local-AI-Agent-/tree/main/examples/llama.android/app/src/main/java/com/example/llama/agent/irismotion
+https://github.com/KrakeCZ/aichat/tree/main/examples/llama.android/app/src/main/java/com/example/llama/agent/irismotion
 
  * **„No expensive eye tracker. Just an Android phone and its selfie camera.“ **
  * ** I started IrisMotion because I believe nobody should need an expensive device just to try controlling a screen with their eyes. It's free, open-source, and designed to work with ordinary Android phones. I'm looking for developers and accessibility testers to help make it better!**
@@ -137,5 +137,5 @@ To function correctly, the AI Agent requires the following permissions:
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/KrakeCZ/AIchat-Android-Local-AI-Agent-.git](https:/github.com/KrakeCZ/AIchat-Android-Local-AI-Agent-.git)
+   git clone [https://github.com/KrakeCZ/aichat-.git](https:/github.com/KrakeCZ/aichat.git)
 
