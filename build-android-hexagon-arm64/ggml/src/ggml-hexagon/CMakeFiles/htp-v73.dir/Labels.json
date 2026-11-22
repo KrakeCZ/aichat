@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/CMakeFiles/htp-v73"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/CMakeFiles/htp-v73.rule"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/CMakeFiles/htp-v73-complete.rule"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v73-prefix/src/htp-v73-stamp/htp-v73-build.rule"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v73-prefix/src/htp-v73-stamp/htp-v73-configure.rule"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v73-prefix/src/htp-v73-stamp/htp-v73-download.rule"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v73-prefix/src/htp-v73-stamp/htp-v73-install.rule"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v73-prefix/src/htp-v73-stamp/htp-v73-mkdir.rule"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v73-prefix/src/htp-v73-stamp/htp-v73-patch.rule"
+		},
+		{
+			"file" : "C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v73-prefix/src/htp-v73-stamp/htp-v73-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"htp-v73"
+		],
+		"name" : "htp-v73"
+	}
+}

@@ -1,0 +1,21 @@
+# ninja log v5
+17	334	8169684002384105	ggml/src/ggml-hexagon/htp_iface_skel.c	196d81a8fdb51d55
+17	334	8169684002384105	ggml/src/ggml-hexagon/htp_iface_stub.c	196d81a8fdb51d55
+17	334	8169684002384105	ggml/src/ggml-hexagon/htp_iface.h	196d81a8fdb51d55
+17	334	8169684002384105	C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp_iface_skel.c	196d81a8fdb51d55
+17	334	8169684002384105	C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp_iface_stub.c	196d81a8fdb51d55
+17	334	8169684002384105	C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp_iface.h	196d81a8fdb51d55
+3	1405	8169684012710779	ggml/src/CMakeFiles/ggml-base.dir/ggml-alloc.c.o	bc7d6dd843805116
+6	1494	8169684013620812	ggml/src/CMakeFiles/ggml-base.dir/ggml-threading.cpp.o	a0dce60e58ea3d1
+1406	2637	8169684023782865	ggml/src/ggml-hexagon/CMakeFiles/htp_iface.dir/htp_iface_stub.c.o	315fc234b2ac574e
+4	4150	8169684040564197	ggml/src/CMakeFiles/ggml-base.dir/ggml.cpp.o	468f0df42926d159
+7	5608	8169684055599661	ggml/src/CMakeFiles/ggml-base.dir/ggml-opt.cpp.o	b641a9d605754581
+1	6085	8169684060397360	ggml/src/CMakeFiles/ggml-base.dir/ggml.c.o	5f64fb1979ab3e5c
+9	8336	8169684081799614	ggml/src/CMakeFiles/ggml-base.dir/ggml-backend.cpp.o	3c02e0fb8ca2ed9f
+11	10590	8169684105419501	ggml/src/CMakeFiles/ggml-base.dir/ggml-backend-meta.cpp.o	cb45abfc564faca3
+15	10743	8169684106960980	ggml/src/CMakeFiles/ggml-base.dir/ggml-quants.c.o	2a19eec74eea294
+13	11146	8169684110964792	ggml/src/CMakeFiles/ggml-base.dir/gguf.cpp.o	8f60e5373c12a1b5
+6	113	8169684859249921	ggml/src/libggml-base.so	a569eceff063f6aa
+10	1420	8169684872443254	ggml/src/ggml-hexagon/CMakeFiles/ggml-hexagon.dir/htp-drv.cpp.o	b7940710ef2e80b
+8	14507	8169684990679237	ggml/src/ggml-hexagon/CMakeFiles/ggml-hexagon.dir/ggml-hexagon.cpp.o	1a10c263540f71b9
+14530	15412	8169685011986991	bin/libggml-hexagon.so	8274334cce1f4953

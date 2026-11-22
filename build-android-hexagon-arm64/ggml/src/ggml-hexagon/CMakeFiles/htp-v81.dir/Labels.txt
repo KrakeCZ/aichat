@@ -1,0 +1,13 @@
+# Target labels
+ htp-v81
+# Source files and their labels
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/CMakeFiles/htp-v81
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/CMakeFiles/htp-v81.rule
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/CMakeFiles/htp-v81-complete.rule
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v81-prefix/src/htp-v81-stamp/htp-v81-build.rule
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v81-prefix/src/htp-v81-stamp/htp-v81-configure.rule
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v81-prefix/src/htp-v81-stamp/htp-v81-download.rule
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v81-prefix/src/htp-v81-stamp/htp-v81-install.rule
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v81-prefix/src/htp-v81-stamp/htp-v81-mkdir.rule
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v81-prefix/src/htp-v81-stamp/htp-v81-patch.rule
+C:/SS24_V3_OK_preAgent_/build-android-hexagon-arm64/ggml/src/ggml-hexagon/htp-v81-prefix/src/htp-v81-stamp/htp-v81-update.rule
