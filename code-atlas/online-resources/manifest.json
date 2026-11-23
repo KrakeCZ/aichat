@@ -1,0 +1,113 @@
+{
+  "records": {
+    "3d-force-graph.min.js": {
+      "bytes": 1389954,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:3d-force-graph@1.80.1;verified_against_supplied_sha512",
+      "sha256": "13088340aad408156064fd120c3bc3a47c93a3cc45b8f132d6284b20e2223be9",
+      "version": "1.80.1"
+    },
+    "avsdf-base.js": {
+      "bytes": 27606,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:avsdf-base@1.0.0;verified_against_supplied_sha512",
+      "sha256": "209638822c9ce644aae2c22b779cec446f0bc5e3114ad7ececc126a76b4372f9",
+      "version": "1.0.0"
+    },
+    "cose-base.js": {
+      "bytes": 118906,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:cose-base@2.2.0;verified_against_supplied_sha512",
+      "sha256": "7cae9509bd36235a63a85e71c8d9fa2cd0bc1d0c1ecc5b5a737976f39d040ddf",
+      "version": "2.2.0"
+    },
+    "cytoscape-avsdf.js": {
+      "bytes": 23185,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:cytoscape-avsdf@1.0.0;verified_against_supplied_sha512",
+      "sha256": "a533493d39ef619ff3f64a3899bf2238ad4546a5871e2980cdd794757e749d87",
+      "version": "1.0.0"
+    },
+    "cytoscape-dagre.min.js": {
+      "bytes": 45649,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:cytoscape-dagre@4.0.1;verified_against_supplied_sha512",
+      "sha256": "ec671a41d2bfcac580352e2997797793949e3489cecaf347fc48670d4bd456b0",
+      "version": "4.0.1"
+    },
+    "cytoscape-fcose.js": {
+      "bytes": 57239,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:cytoscape-fcose@2.2.0;verified_against_supplied_sha512",
+      "sha256": "4b1cab218d74996aa59cd8473f9239cc6398b8c1774d84d7e59ad9a68959cb57",
+      "version": "2.2.0"
+    },
+    "cytoscape.min.js": {
+      "bytes": 435503,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:cytoscape@3.34.3;verified_against_supplied_sha512",
+      "sha256": "5f3b5b529546d5af1fc5628590af033b74511a5b6f789f5f4682845863228b91",
+      "version": "3.34.3"
+    },
+    "github-dark.min.css": {
+      "bytes": 1315,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "BSD-3-Clause",
+      "origin": "pinned-npm-archive:@highlightjs/cdn-assets@11.11.1;verified_against_supplied_sha512",
+      "sha256": "9f208d022102b1d0c7aebfecd8e42ca7997d5de636649d2b31ea63093d809019",
+      "version": "11.11.1"
+    },
+    "highlight.min.js": {
+      "bytes": 127496,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "BSD-3-Clause",
+      "origin": "pinned-npm-archive:@highlightjs/cdn-assets@11.11.1;verified_against_supplied_sha512",
+      "sha256": "c4a399dd6f488bc97a3546e3476747b3e714c99c57b9473154c6fb8d259b9381",
+      "version": "11.11.1"
+    },
+    "layout-base-v1.js": {
+      "bytes": 117750,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:layout-base@1.0.2@1.0.2;verified_against_supplied_sha512",
+      "sha256": "c7fdd9f59676fadd6c4a9c0fd6aa51d1ce8497695d396a7bdd98ffc95788b8ea",
+      "version": "1.0.2"
+    },
+    "layout-base.js": {
+      "bytes": 147958,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:layout-base@2.0.1;verified_against_supplied_sha512",
+      "sha256": "ec15ab5df9af3f20708f4faab994accf91cda71848cd5bb10a23432cc50b6745",
+      "version": "2.0.1"
+    },
+    "three-spritetext.min.js": {
+      "bytes": 9179,
+      "category": "graphics",
+      "expected_sha_provided": true,
+      "license_hint": "MIT",
+      "origin": "pinned-npm-archive:three-spritetext@1.10.0;verified_against_supplied_sha512",
+      "sha256": "6c2059abe62aac9ee977a3630d8f1b6dd2b8a1ff0ef3db032cf2abd433f7a7be",
+      "version": "1.10.0"
+    }
+  },
+  "schema": "atlas-offline-resources/1"
+}

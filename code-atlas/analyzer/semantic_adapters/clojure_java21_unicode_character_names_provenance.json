@@ -1,0 +1,13 @@
+{
+  "schema": "uca-clj001-java-character-name-table/1",
+  "jdk_version": "21.0.12.1",
+  "source": "java.lang.Character.getName(cp); validated by Character.codePointOf",
+  "unicode_version_profile": "JDK21 Unicode 15.0",
+  "count": 288767,
+  "uncompressed_sha256": "7d3c506b734229ed44e1dc38dc5a964e5ec61247bf74c77c407ce1b337e38bb3",
+  "compressed_sha256": "e94e653c1deff9a9cbbfacd36eda91162f5e975027d089656b850197353287ea",
+  "verified_java_character_codepointof": true,
+  "static_analysis_process_execution": false,
+  "script_alias_count": 164,
+  "note": "This table is version-pinned and names not listed are not accepted by the pinned JDK21 Character.codePointOf; other JDKs require a different reader profile."
+}

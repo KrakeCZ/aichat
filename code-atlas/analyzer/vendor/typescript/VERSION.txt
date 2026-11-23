@@ -1,0 +1,1 @@
+TypeScript compiler API 5.8.3 (Apache-2.0). Vendored static parser only; analyzed code is never executed.

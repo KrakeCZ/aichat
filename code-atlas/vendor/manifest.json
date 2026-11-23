@@ -1,0 +1,52 @@
+{
+  "cytoscape.min.js": {
+    "url": "https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.34.3/cytoscape.min.js",
+    "sha256": "5f3b5b529546d5af1fc5628590af033b74511a5b6f789f5f4682845863228b91",
+    "bytes": 435503
+  },
+  "highlight.min.js": {
+    "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js",
+    "sha256": "c4a399dd6f488bc97a3546e3476747b3e714c99c57b9473154c6fb8d259b9381",
+    "bytes": 127496
+  },
+  "github-dark.min.css": {
+    "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css",
+    "sha256": "9f208d022102b1d0c7aebfecd8e42ca7997d5de636649d2b31ea63093d809019",
+    "bytes": 1315
+  },
+  "cytoscape-dagre.min.js": {
+    "url": "https://cdn.jsdelivr.net/npm/cytoscape-dagre@4.0.1/dist/cytoscape-dagre.min.js",
+    "sha256": "ec671a41d2bfcac580352e2997797793949e3489cecaf347fc48670d4bd456b0",
+    "bytes": 45649
+  },
+  "layout-base.js": {
+    "url": "https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js",
+    "sha256": "ec15ab5df9af3f20708f4faab994accf91cda71848cd5bb10a23432cc50b6745",
+    "bytes": 147958
+  },
+  "cose-base.js": {
+    "url": "https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js",
+    "sha256": "7cae9509bd36235a63a85e71c8d9fa2cd0bc1d0c1ecc5b5a737976f39d040ddf",
+    "bytes": 118906
+  },
+  "cytoscape-fcose.js": {
+    "url": "https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js",
+    "sha256": "4b1cab218d74996aa59cd8473f9239cc6398b8c1774d84d7e59ad9a68959cb57",
+    "bytes": 57239
+  },
+  "cytoscape-avsdf.js": {
+    "url": "https://cdn.jsdelivr.net/npm/cytoscape-avsdf@1.0.0/cytoscape-avsdf.js",
+    "sha256": "a533493d39ef619ff3f64a3899bf2238ad4546a5871e2980cdd794757e749d87",
+    "bytes": 23185
+  },
+  "3d-force-graph.min.js": {
+    "url": "https://cdn.jsdelivr.net/npm/3d-force-graph@1.80.1/dist/3d-force-graph.min.js",
+    "sha256": "13088340aad408156064fd120c3bc3a47c93a3cc45b8f132d6284b20e2223be9",
+    "bytes": 1389954
+  },
+  "three-spritetext.min.js": {
+    "url": "https://cdn.jsdelivr.net/npm/three-spritetext@1.10.0/dist/three-spritetext.min.js",
+    "sha256": "6c2059abe62aac9ee977a3630d8f1b6dd2b8a1ff0ef3db032cf2abd433f7a7be",
+    "bytes": 9179
+  }
+}

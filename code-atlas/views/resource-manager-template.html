@@ -1,0 +1,87 @@
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Atlas · Správce offline grafiky</title>
+<style>body{font:15px system-ui;margin:28px auto;max-width:1040px;padding:0 18px;background:#0e1826;color:#ecf2fa;line-height:1.5}a{color:#8cd7ff}h1{margin:0 0 6px}.muted{color:#afc2d4}.lead{margin-top:0}.card{border:1px solid #36506a;padding:20px;border-radius:13px;background:#172536;margin:20px 0}.count{font-size:24px;color:#bdf2d4;font-weight:700}button{color:#fff;background:#255b85;border:1px solid #5281a1;border-radius:9px;padding:10px 17px;font:inherit;cursor:pointer}button.main{background:#117457;border-color:#40ba89;font-weight:700;font-size:17px;padding:14px 24px}button:disabled{opacity:.48;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #d3f16d;outline-offset:3px}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid #38536d;padding:11px 8px;text-align:left}td small{display:block;color:#b5c6d6}details{margin:18px 0}code{overflow-wrap:anywhere;color:#d4eaff}#progress{white-space:pre-line;border-radius:8px;margin:14px 0;color:#d8eeff}input[type=file]{max-width:100%}.warn{color:#ffdcab}@media(max-width:600px){td,th{font-size:12px;padding:7px 3px}button{padding:9px 7px}.card{padding:12px}}</style></head><body>
+<h1>Atlas · grafika bez internetu</h1><p class="lead muted">Knihovny stáhneš jen jednou. Zůstanou uložené v Atlasu a použijí se pro všechny další projekty. Žádný zdrojový kód se nikam neodesílá.</p>
+<section class="card" aria-label="Jednoduchá instalace"><div class="count" id="counter">__GRAPHIC_COUNT__ / __GRAPHIC_MAX__ připraveno</div><p>Stačí jednou kliknout. Atlas stáhne pouze původní veřejné grafické knihovny ze svých předem daných verzí.</p>
+<button id="downloadAll" class="main" type="button">Stáhnout vše a nainstalovat</button><p class="muted" id="localInfo">Stahování se nikdy nespustí samo.</p><div id="progress" role="status" aria-live="polite"></div></section>
+<p>__HOME_LINK__ · <a href="./resource-status.json">Technický stav prostředků (JSON)</a></p>
+<details><summary>Jednotlivé knihovny a přímé odkazy ke stažení</summary><p class="muted">Každá verze je pevně určená. Odkazy vedou na veřejné npm archivy; pouze po kliknutí. Pokud se automatické stažení nepodaří, archiv můžeš stáhnout ručně a níže ho vybrat.</p>
+<table><thead><tr><th>Balíček</th><th>Stav</th><th>Automaticky</th><th>Ručně</th></tr></thead><tbody>__PACKAGE_ROWS__</tbody></table>
+<h3>Jednotlivé původní .js / .css soubory</h3>
+<p class="muted">Když máš knihovny připravené, můžeš je uložit jednotlivě přímo ze své cache.
+„Originální soubor“ otevře veřejnou adresu vydání (jen po kliknutí); pro import původního balíčku použij tabulku výše.</p>
+<table><thead><tr><th>Soubor</th><th>Stav</th><th>Offline uložit</th><th>Web vydavatele</th></tr></thead>
+<tbody>__DIRECT_ASSET_ROWS__</tbody></table>
+<h3>Import již staženého souboru (bez připojení)</h3><p class="muted">Vyber předem stažený soubor <code>.tgz</code> z oficiálního zdroje. Obsah a verze se kontrolují; bez nezávisle ověřeného podpisu nelze potvrdit původ archivu.</p>
+<input id="archive" type="file" accept=".tgz,application/gzip"><button type="button" id="importFile">Importovat vybraný archiv</button></details>
+<details><summary>Volitelné kompilátory a sémantické enginy (teď nic stahovat nemusíš)</summary><p>Nejsou nutné pro instalaci grafů. Jejich přípravu budeme řešit samostatně.</p><ul>__OPTIONAL_ENGINES__</ul></details>
+<script>
+'use strict';
+(()=>{
+  const $=id=>document.getElementById(id);
+  let token=null, inventory=null, busy=false;
+  const packages=Array.from(document.querySelectorAll('[data-pkg]')).map(row=>row.dataset.pkg);
+  function message(value){$('progress').textContent=value;}
+  function ready(name){return Boolean((inventory?.packages||[]).find(x=>x.name===name)?.installed);}
+  function updateUI(){
+    if(!inventory)return;
+    const total=inventory.summary?.present||0, max=inventory.summary?.required||10;
+    $('counter').textContent=total+' / '+max+' připraveno';
+    $('downloadAll').disabled=busy||total===max||!token;
+    $('downloadAll').textContent=total===max?'Všechny soubory uložené — obnov graf':'Stáhnout vše a nainstalovat';
+    for(const row of document.querySelectorAll('[data-pkg]')){
+      const ok=ready(row.dataset.pkg), button=row.querySelector('button');
+      row.querySelector('.state').textContent=ok?'Nainstalováno':'Chybí';
+      button.disabled=busy||ok||!token;
+      button.textContent=ok?'Hotovo':'Stáhnout';
+    }
+    $('importFile').disabled=busy||!token;
+  }
+  async function session(){
+    const res=await fetch('./__resources__/session',{cache:'no-store',credentials:'same-origin'});
+    if(!res.ok)throw new Error('Správce není dostupný přes lokální server Atlasu.');
+    const data=await res.json();token=data.token;inventory=data.inventory;updateUI();
+  }
+  async function post(path,body,headers){
+    const res=await fetch('./__resources__/'+path,{method:'POST',credentials:'same-origin',
+      headers:{'X-Atlas-Token':token,...headers},body});
+    const result=await res.json();
+    if(!res.ok||!result.ok)throw new Error(result.error||'Stahování se nepodařilo');
+    inventory=result.inventory;updateUI();return result;
+  }
+  async function downloadOne(pkg){
+    return post('download',JSON.stringify({package:pkg}),{'Content-Type':'application/json'});
+  }
+  $('downloadAll').addEventListener('click',async()=>{
+    if(busy||!token)return;
+    if(!confirm('Stáhnout chybějící veřejné grafické knihovny z npm registru? Žádný projektový kód se neodesílá.'))return;
+    busy=true;updateUI();let done=0;const problems=[];
+    for(const pkg of packages){
+      if(ready(pkg))continue;
+      message('Stahuji '+pkg+' ... ('+(++done)+')');
+      try{await downloadOne(pkg);}catch(error){problems.push(pkg+': '+error.message);}
+    }
+    busy=false;updateUI();
+    if(inventory?.summary?.present!==inventory?.summary?.required){problems.push('Grafika ještě není kompletní; zbývající balíčky jsou uvedeny ve stavu níže.');}
+    if(problems.length)message('Některé součásti se nepodařilo připravit:\n'+problems.join('\n')+'\nZkus jednotlivé balíčky nebo přímý odkaz.');
+    else message('Hotovo. Grafika je uložená pro všechny projekty. Obnov graf (F5). Pokud používáš samostatného správce, znovu otevři projekt v Atlasu.');
+  });
+  for(const button of document.querySelectorAll('.get-one'))button.addEventListener('click',async()=>{
+    if(busy||!token)return;
+    if(!confirm('Stáhnout veřejný balíček '+button.dataset.package+' do Atlasu?'))return;
+    busy=true;updateUI();message('Stahuji '+button.dataset.package+' ...');
+    try{await downloadOne(button.dataset.package);message('Uloženo. Stahovat znovu není nutné.');}
+    catch(error){message('Chyba: '+error.message);}finally{busy=false;updateUI();}
+  });
+  $('importFile').addEventListener('click',async()=>{
+    if(busy||!token)return;
+    const file=$('archive').files?.[0];if(!file){message('Nejdřív vyber soubor .tgz.');return;}
+    if(!confirm('Původ archivu není nezávisle ověřen. Důvěřuješ staženému souboru a chceš ho místně importovat?'))return;
+    busy=true;updateUI();message('Ověřuji a importuji '+file.name+' ...');
+    try{await post('import',file,{'Content-Type':'application/octet-stream','X-Atlas-Manual-Consent':'unverified-origin-accepted'});message('Archiv naimportován.');}
+    catch(error){message('Import selhal: '+error.message);}finally{busy=false;updateUI();}
+  });
+  session().then(()=>{$('localInfo').textContent='Připojeno k místnímu správci. Bez kliknutí není dovoleno nic stahovat.';})
+    .catch(()=>{message('Pro tlačítka spusť Atlas přes START_WINDOWS.bat nebo atlas.py run. Přímé odkazy zůstávají dostupné v rozbalovací části.');
+      $('downloadAll').disabled=true;for(const button of document.querySelectorAll('.get-one'))button.disabled=true;$('importFile').disabled=true;});
+})();
+</script></body></html>

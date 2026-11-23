@@ -1,0 +1,49 @@
+name: Code Atlas - Main Pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'code-atlas/**'
+      - '.github/workflows/code-atlas.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+          submodules: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install analyzer dependencies
+        run: python -m pip install -r code-atlas/requirements-graph.txt
+      - name: Build Atlas website
+        run: |
+          python code-atlas/atlas.py analyze . \
+            --output "$RUNNER_TEMP/code-atlas-site" \
+            --repo "$GITHUB_REPOSITORY" \
+            --bundle-sources
+      - name: Verify pages
+        run: |
+          test -s "$RUNNER_TEMP/code-atlas-site/index.html"
+          test -s "$RUNNER_TEMP/code-atlas-site/atlas-v2.html"
+          test -s "$RUNNER_TEMP/code-atlas-site/graph.html"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/code-atlas-site
+      - id: deploy
+        uses: actions/deploy-pages@v4
