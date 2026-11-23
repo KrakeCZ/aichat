@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="cs">
+<html lang="cs" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,7 +7,6 @@
   <title>Universal Code Atlas — Developer Encyclopedia</title>
   <style>
     :root {
-      /* VS Code Dark 2026 & Modern AST Explorer Palette */
       --bg: #070b14;
       --bg-surface: #0c1322;
       --panel: #10192b;
@@ -22,7 +21,6 @@
       --good: #56d4b5;
       --good-soft: rgba(86, 212, 181, 0.11);
       --warn: #f2b84b;
-      --warn-soft: rgba(242, 184, 75, 0.12);
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --radius-lg: 14px;
@@ -42,16 +40,22 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Kritická ochrana proti přetékání dlouhých cest bez mezer na mobilu */
+    /* Ochrana proti přetékání dlouhých cest na mobilu */
     h1, h2, h3, p, a, div, span, strong, small, code, li {
       overflow-wrap: anywhere;
       word-break: normal;
     }
 
+    /* Kód a cesty zůstávají vždy LTR i v arabském RTL režimu */
+    pre, code, .code, .tree, .fmt-pill, .fmt-row-title, .fmt-row-sub, .context-badge, .fileBtn {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
     a { color: var(--blue); text-decoration: none; transition: color 0.15s ease; }
     a:hover { text-decoration: underline; }
 
-    button, input, select {
+    button, input {
       color: var(--text);
       background: var(--card);
       border: 1px solid var(--border);
@@ -103,6 +107,38 @@
     }
     .dim, small { color: var(--muted); font-weight: 400; }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Přepínač jazyků CS / EN / AR */
+    .lang-switcher {
+      display: inline-flex;
+      align-items: center;
+      background: #09101d;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: 0;
+      border-radius: 7px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .lang-btn:hover { background: var(--card); color: var(--text); }
+    .lang-btn[aria-pressed="true"] {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
     nav {
       display: flex;
       flex-wrap: wrap;
@@ -124,7 +160,7 @@
       color: var(--blue);
     }
 
-    /* Hlavní dvousloupcový layout */
+    /* Layout (podporuje automaticky LTR i RTL přes logical properties) */
     .layout {
       display: grid;
       grid-template-columns: 255px minmax(0, 1fr);
@@ -138,7 +174,7 @@
       height: 100vh;
       overflow-y: auto;
       background: var(--bg-surface);
-      border-right: 1px solid var(--border);
+      border-inline-end: 1px solid var(--border);
       padding: 20px 14px;
       display: flex;
       flex-direction: column;
@@ -201,7 +237,6 @@
 
     .caps { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--good); }
 
-    /* Container Queries pro responzivní karty */
     .areas-wrapper { container-type: inline-size; }
     .stats {
       display: grid;
@@ -240,7 +275,6 @@
     .area button { margin-top: 9px; padding: 6px 10px; font-size: 12px; width: 100%; }
     .area small { display: block; margin-top: 4px; }
 
-    /* Jazykové štítky */
     .chips { display: flex; gap: 6px; flex-wrap: wrap; }
     .chip {
       background: rgba(11, 18, 32, 0.85);
@@ -252,7 +286,6 @@
       color: var(--muted);
     }
 
-    /* Globální přepínač kontextu llama.android */
     .context-bar {
       display: flex;
       align-items: center;
@@ -275,12 +308,10 @@
       font-weight: 600;
     }
 
-    /* Seznamy (.stack) a moderní formátování položek */
     .stack { display: grid; gap: 8px; }
     .stack.is-collapsed > *:nth-child(n+6) { display: none !important; }
     .is-llama-hidden { display: none !important; }
 
-    /* Formátovaná karta pro cykly */
     .fmt-cycle {
       background: #0c1424;
       border: 1px solid var(--border);
@@ -304,6 +335,7 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 6px;
+      direction: ltr;
     }
     .fmt-pill {
       display: inline-flex;
@@ -319,7 +351,6 @@
     .fmt-pill span { font-size: 10.5px; color: var(--muted); }
     .fmt-arrow { color: var(--blue); font-size: 12px; user-select: none; }
 
-    /* Formátovaná karta pro technologie, buildy a hotspoty */
     .fmt-row {
       display: flex;
       align-items: flex-start;
@@ -334,20 +365,8 @@
       contain-intrinsic-size: 56px;
     }
     .fmt-row-main { min-width: 0; flex: 1 1 240px; }
-    .fmt-row-title {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      display: block;
-    }
-    .fmt-row-sub {
-      font-family: var(--mono);
-      font-size: 11.5px;
-      color: var(--muted);
-      display: block;
-      margin-top: 2px;
-    }
+    .fmt-row-title { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text); display: block; }
+    .fmt-row-sub { font-family: var(--mono); font-size: 11.5px; color: var(--muted); display: block; margin-top: 2px; }
     .fmt-tag {
       font-family: var(--mono);
       font-size: 11.5px;
@@ -359,27 +378,9 @@
       white-space: nowrap;
     }
 
-    .stack-toolbar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .stack-filter {
-      flex: 1 1 220px;
-      max-width: 400px;
-      background: #080d17;
-      padding: 7px 11px;
-      font-size: 13px;
-    }
-    .stack-toggle {
-      margin-top: 8px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.025);
-      border-style: dashed;
-      color: var(--blue);
-    }
+    .stack-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
+    .stack-filter { flex: 1 1 220px; max-width: 400px; background: #080d17; padding: 7px 11px; font-size: 13px; }
+    .stack-toggle { margin-top: 8px; width: 100%; background: rgba(255, 255, 255, 0.025); border-style: dashed; color: var(--blue); }
 
     /* File Explorer */
     .col2 {
@@ -417,7 +418,6 @@
     }
     .tree summary:hover { color: var(--blue); background: rgba(255, 255, 255, 0.03); }
 
-    /* Skrytí ostatních složek mimo llama.android */
     .tree.only-llama > details:not([data-llama-root]),
     .tree.only-llama > button.fileBtn {
       display: none;
@@ -454,9 +454,9 @@
     .btnrow a:hover { border-color: var(--blue); background: var(--card-hover); }
 
     .notice {
-      border-left: 3px solid var(--good);
+      border-inline-start: 3px solid var(--good);
       background: var(--good-soft);
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      border-radius: var(--radius-md);
       padding: 11px 14px;
       color: var(--text);
       margin-top: 14px;
@@ -475,7 +475,6 @@
       margin-top: 16px;
     }
 
-    /* Responzivní úpravy pro mobily a tablety */
     @media (max-width: 900px) {
       .layout { display: block; }
       aside {
@@ -487,7 +486,7 @@
         align-items: center;
         overflow-x: auto;
         white-space: nowrap;
-        border-right: 0;
+        border-inline-end: 0;
         border-bottom: 1px solid var(--border);
         padding: 9px 12px;
         gap: 6px;
@@ -517,52 +516,60 @@
 <body>
   <header>
     <strong>🕸 Universal Code Atlas <small>· Developer Encyclopedia</small></strong>
-    <nav>
-      <a href="./atlas-v2.html">🌌 Interaktivní 2D/3D atlas</a>
-      <a href="./graph.html">Klasický graf</a>
-      <a href="./inside-file.html">🧬 Inside File</a>
-      <a href="./timeline.html">🕒 Git evoluce</a>
-      <a href="./graph-index.json" download>⬇ Export grafu JSON</a>
-      <a href="./thanks.html">💛 Poděkování</a>
-    </nav>
+    <div class="header-right">
+      <!-- Real-time offline přepínač jazyků CS / EN / AR -->
+      <div class="lang-switcher" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn" data-lang="cs" aria-pressed="true" title="Čeština">🇨🇿 CS</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English">🇬🇧 EN</button>
+        <button type="button" class="lang-btn" data-lang="ar" aria-pressed="false" title="العربية">🇸🇦 AR</button>
+      </div>
+      <nav>
+        <a href="./atlas-v2.html" data-i18n="nav_atlas">🌌 Interaktivní 2D/3D atlas</a>
+        <a href="./graph.html" data-i18n="nav_graph">Klasický graf</a>
+        <a href="./inside-file.html" data-i18n="nav_inside">🧬 Inside File</a>
+        <a href="./timeline.html" data-i18n="nav_timeline">🕒 Git evoluce</a>
+        <a href="./graph-index.json" download data-i18n="nav_export">⬇ Export grafu JSON</a>
+        <a href="./thanks.html" data-i18n="nav_thanks">💛 Poděkování</a>
+      </nav>
+    </div>
   </header>
 
   <div class="layout">
     <aside id="sideNav">
-      <strong>Obsah projektu</strong>
-      <a href="#about">Přehled</a>
-      <a href="#files">📁 File Explorer a zdrojáky</a>
-      <a href="#architecture">Architektura a vazby</a>
-      <a href="#topology">Síť závislostí</a>
-      <a href="#buildContext">Build kontext</a>
-      <a href="#phpVersion">PHP verze</a>
-      <a href="#toolVersions">Verze jazyků</a>
-      <a href="#hotspots">Klíčové soubory</a>
-      <a href="#data">Důkazy a AI kontext</a>
-      <p>Automaticky generovaný obsah vychází ze skutečných souborů a staticky nalezených vztahů. Nejde o běhovou stopu ani záruku úplnosti.</p>
+      <strong data-i18n="aside_title">Obsah projektu</strong>
+      <a href="#about" data-i18n="menu_about">Přehled</a>
+      <a href="#files" data-i18n="menu_files">📁 File Explorer a zdrojáky</a>
+      <a href="#architecture" data-i18n="menu_arch">Architektura a vazby</a>
+      <a href="#topology" data-i18n="menu_topo">Síť závislostí</a>
+      <a href="#buildContext" data-i18n="menu_build">Build kontext</a>
+      <a href="#phpVersion" data-i18n="menu_php">PHP verze</a>
+      <a href="#toolVersions" data-i18n="menu_tools">Verze jazyků</a>
+      <a href="#hotspots" data-i18n="menu_hotspots">Klíčové soubory</a>
+      <a href="#data" data-i18n="menu_data">Důkazy a AI kontext</a>
+      <p data-i18n="aside_note">Automaticky generovaný obsah vychází ze skutečných souborů a staticky nalezených vztahů. Nejde o běhovou stopu ani záruku úplnosti.</p>
     </aside>
 
     <main>
       <!-- 1. PŘEHLED -->
       <section class="hero" id="about">
-        <div class="caps">Průvodce zdrojovým kódem</div>
+        <div class="caps" data-i18n="hero_caps">Průvodce zdrojovým kódem</div>
         <h1 id="project">Načítám projekt…</h1>
-        <p>Otevřený průzkumník architektury. Od projektu → k modulu → k souboru → ke konkrétní vazbě a zdrojovému důkazu.</p>
+        <p data-i18n="hero_desc">Otevřený průzkumník architektury. Od projektu → k modulu → k souboru → ke konkrétní vazbě a zdrojovému důkazu.</p>
         <div class="stats" id="stats"></div>
         <div class="chips" id="languages" style="margin-top:14px"></div>
-        <p class="notice">🔎 Proč je něco propojené? Otevři <a href="./atlas-v2.html">Atlas</a>, klikni na hranu a zobraz si přesnou evidenci. Neověřené a dynamické vazby mohou chybět — Atlas je nesmí domýšlet.</p>
+        <p class="notice" data-i18n="hero_notice">🔎 Proč je něco propojené? Otevři Atlas, klikni na hranu a zobraz si přesnou evidenci. Neověřené a dynamické vazby mohou chybět — Atlas je nesmí domýšlet.</p>
       </section>
 
-      <!-- 2. ZDROJOVÉ SOUBORY (NA 2. POZICI + ZAMĚŘENÍ NA LLAMA.ANDROID) -->
+      <!-- 2. ZDROJOVÉ SOUBORY -->
       <section class="panel" id="files">
-        <h2>Zdrojové soubory · úplný File Explorer</h2>
-        <p>Výchozí pohled je zaměřen na modul <code>examples/llama.android</code>. Rozbal složky nebo vyhledej cestu, třídu či název. Otevře se celý soubor.</p>
+        <h2 data-i18n="files_h2">Zdrojové soubory · úplný File Explorer</h2>
+        <p data-i18n="files_desc">Výchozí pohled je zaměřen na modul examples/llama.android. Rozbal složky nebo vyhledej cestu, třídu či název.</p>
 
         <div class="context-bar">
-          <span class="context-badge" id="scopeStatus">🎯 Aktivní kontext: examples/llama.android</span>
+          <span class="context-badge" id="scopeStatus">🎯 examples/llama.android</span>
           <div class="btnrow">
-            <button type="button" id="toggleLlamaMode" aria-pressed="true">Pouze llama.android</button>
-            <button type="button" id="filterSearchLlama">🔍 Vyhledat v llama.android</button>
+            <button type="button" id="toggleLlamaMode" aria-pressed="true" data-i18n="btn_only_llama">Pouze llama.android</button>
+            <button type="button" id="filterSearchLlama" data-i18n="btn_search_llama">🔍 Vyhledat v llama.android</button>
           </div>
         </div>
 
@@ -570,19 +577,19 @@
           <div>
             <input type="search" id="fileSearch" placeholder="Hledej soubor nebo symbol…" aria-label="Hledat soubory">
             <div id="matches"></div>
-            <button id="more" hidden>Načíst další výsledky</button>
+            <button id="more" hidden data-i18n="btn_more">Načíst další výsledky</button>
             <details open>
-              <summary style="cursor:pointer;font-weight:600;padding:5px 0">📁 Strom projektu</summary>
+              <summary style="cursor:pointer;font-weight:600;padding:5px 0" data-i18n="tree_summary">📁 Strom projektu</summary>
               <div class="tree only-llama" id="fileTree"></div>
             </details>
           </div>
           <div>
-            <h3 id="selectedName" style="text-transform:none;color:var(--text);font-size:15px;margin-top:0">Vyber soubor</h3>
+            <h3 id="selectedName" style="text-transform:none;color:var(--text);font-size:15px;margin-top:0" data-i18n="select_file">Vyber soubor</h3>
             <div class="btnrow">
-              <a id="atlasFileLink" href="./atlas-v2.html">🌌 Zobrazit vazby v Atlasu</a>
-              <a id="insideFileLink" href="./inside-file.html">🧬 Vnitřní graf souboru</a>
-              <button id="saveSource" disabled>💾 Uložit soubor</button>
-              <button id="copySource" type="button">📋 Kopírovat</button>
+              <a id="atlasFileLink" href="./atlas-v2.html" data-i18n="btn_atlas_links">🌌 Zobrazit vazby v Atlasu</a>
+              <a id="insideFileLink" href="./inside-file.html" data-i18n="btn_inside_file">🧬 Vnitřní graf souboru</a>
+              <button id="saveSource" disabled data-i18n="btn_save">💾 Uložit soubor</button>
+              <button id="copySource" type="button" data-i18n="btn_copy">📋 Kopírovat</button>
               <span id="codeState" class="dim"></span>
             </div>
             <div class="box"><pre id="sourcePreview" class="code">Zde se zobrazí zdrojový kód…</pre></div>
@@ -590,35 +597,33 @@
         </div>
       </section>
 
-      <!-- 3. ARCHITEKTURA A VAZBY -->
+      <!-- 3. ARCHITEKTURA -->
       <section class="panel" id="architecture">
-        <h2>Skutečná struktura projektu</h2>
+        <h2 data-i18n="arch_h2">Skutečná struktura projektu</h2>
         <p id="architectureNote">Načítám skupiny…</p>
         <div class="btnrow" style="margin:12px 0">
-          <button id="folderView" aria-pressed="false">📁 Adresářové oblasti</button>
-          <button id="moduleView" aria-pressed="false">📦 Adresáře s build manifesty</button>
+          <button id="folderView" aria-pressed="false" data-i18n="btn_folders">📁 Adresářové oblasti</button>
+          <button id="moduleView" aria-pressed="false" data-i18n="btn_modules">📦 Adresáře s build manifesty</button>
         </div>
-        <div class="areas-wrapper">
-          <div class="areas" id="areas"></div>
-        </div>
-        <h3>Zjištěné technologie a evidence</h3>
+        <div class="areas-wrapper"><div class="areas" id="areas"></div></div>
+        <h3 data-i18n="arch_tech">Zjištěné technologie a evidence</h3>
         <div class="stack" id="ecosystems"></div>
-        <h3>Vazby mezi oblastmi (směr od → k)</h3>
+        <h3 data-i18n="arch_links">Vazby mezi oblastmi (směr od → k)</h3>
         <div class="stack" id="areaLinks"></div>
       </section>
 
-      <!-- 4. SÍŤ ZÁVISLOSTÍ -->
+      <!-- 4. TOPOLOGIE -->
       <section class="panel" id="topology">
-        <h2>Topologie doložených závislostí</h2>
-        <p>Samostatné pohledy na potvrzené statické vazby a možné dynamické cíle. Komponenty grafu nejsou automaticky architektonické moduly. Pokud vazba chybí, neznamená to nezávislost.</p>
+        <h2 data-i18n="topo_h2">Topologie doložených závislostí</h2>
+        <p data-i18n="topo_desc">Samostatné pohledy na potvrzené statické vazby a možné dynamické cíle. Komponenty grafu nejsou automaticky architektonické moduly.</p>
         <div class="stats" id="topologyStats"></div>
-        <h3>Provázané součásti (potvrzené vztahy)</h3>
+        <h3 data-i18n="topo_regions">Provázané součásti (potvrzené vztahy)</h3>
         <div class="stack" id="topologyRegions"></div>
-        <h3>Cyklické souborové závislosti</h3>
+        <h3 data-i18n="topo_cycles">Cyklické souborové závislosti</h3>
         <div class="stack" id="topologyCycles"></div>
-        <h3>Mezijazykové vazby s důkazy</h3>
+        <h3 data-i18n="topo_cross">Mezijazykové vazby s důkazy</h3>
         <div class="stack" id="crossLanguages"></div>
-        <h3>Skutečné pokrytí jazykových analyzátorů</h3>
+        <h3 data-i18n="topo_caps">Skutečné pokrytí jazykových analyzátorů</h3>
         <div class="stack" id="capabilities"></div>
         <div class="btnrow" style="margin-top:14px">
           <a href="./dependency-topology.json" download>⬇ Topologie JSON</a>
@@ -628,74 +633,322 @@
 
       <!-- 5. BUILD KONTEXT -->
       <section class="panel" id="buildContext">
-        <h2>Build kontext · Gradle / Maven / Android / CMake</h2>
-        <p>Staticky doložené deklarace a možné návaznosti. Zjištěné varianty nejsou totéž jako vyhodnocená konfigurace buildu; bez Gradle/Maven modelu nejde zaručit úplný classpath.</p>
+        <h2 data-i18n="build_h2">Build kontext · Gradle / Maven / Android / CMake</h2>
+        <p data-i18n="build_desc">Staticky doložené deklarace a možné návaznosti. Zjištěné varianty nejsou totéž jako vyhodnocená konfigurace buildu.</p>
         <div class="stats" id="buildStats"></div>
         <div class="stack" id="buildEdges"></div>
-        <h3>Android source sety a možné build varianty</h3>
-        <p>Jde o kandidátní model odvozený z doslovných deklarací v Gradlu, nikoli o skutečně vyhodnocený AGP model. Označené vzájemně neslučitelné source sety nepředstavují důkaz chybného běhového volání.</p>
+        <h3 data-i18n="build_variants">Android source sety a možné build varianty</h3>
+        <p data-i18n="build_variants_desc">Kandidátní model odvozený z doslovných deklarací v Gradlu.</p>
         <div class="stats" id="variantStats"></div>
         <div class="stack" id="variantInfo"></div>
         <div class="btnrow" style="margin-top:14px">
-          <a href="./build-context.json" download>⬇ Stáhnout Build Context JSON</a>
-          <a href="./android-variant-context.json" download>⬇ Stáhnout Variant Context JSON</a>
+          <a href="./build-context.json" download>⬇ Build Context JSON</a>
+          <a href="./android-variant-context.json" download>⬇ Variant Context JSON</a>
         </div>
       </section>
 
       <!-- 6. PHP VERZE -->
       <section class="panel" id="phpVersion">
-        <h2>PHP Version &amp; Resources Info</h2>
-        <p>Offline přehled deklarovaných PHP verzí. Composer a PHP se při této kontrole nespouštějí. Deklarovaná kompatibilita není verze skutečného serveru.</p>
+        <h2 data-i18n="php_h2">PHP Version &amp; Resources Info</h2>
+        <p data-i18n="php_desc">Offline přehled deklarovaných PHP verzí. Composer a PHP se při této kontrole nespouštějí.</p>
         <div class="stats" id="phpVersionStats"></div>
         <div class="stack" id="phpVersionRecords"></div>
         <div class="btnrow" style="margin-top:14px">
-          <a href="./php-version-report.json" download>⬇ Stáhnout PHP Version Report JSON</a>
-          <a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer">↗ Oficiální podpora PHP</a>
+          <a href="./php-version-report.json" download>⬇ PHP Version Report JSON</a>
+          <a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer" data-i18n="php_official">↗ Oficiální podpora PHP</a>
         </div>
       </section>
 
       <!-- 7. VERZE JAZYKŮ -->
       <section class="panel" id="toolVersions">
-        <h2>Language &amp; Toolchain Versions — offline přehled</h2>
-        <p>Deklarace z projektu nejsou důkazem nainstalovaných nástrojů ani nasazených verzí. Čteme jen metadata z repozitáře; nic nestahujeme ani nespouštíme.</p>
+        <h2 data-i18n="tools_h2">Language &amp; Toolchain Versions — offline přehled</h2>
+        <p data-i18n="tools_desc">Deklarace z projektu nejsou důkazem nainstalovaných nástrojů ani nasazených verzí.</p>
         <div class="stats" id="toolVersionStats"></div>
         <div class="stack" id="toolVersionEvidence"></div>
         <div class="btnrow" style="margin-top:14px">
-          <a href="./toolchain-version-report.json" download>⬇ Stáhnout report jazykových a build verzí JSON</a>
+          <a href="./toolchain-version-report.json" download data-i18n="tools_json">⬇ Report jazykových a build verzí JSON</a>
         </div>
       </section>
 
       <!-- 8. KLÍČOVÉ SOUBORY -->
       <section class="panel" id="hotspots">
-        <h2>Nejvíce propojené soubory</h2>
-        <p>Orientační vstupní body do projektu podle počtu nalezených vztahů. Vysoké číslo samo o sobě není chyba.</p>
+        <h2 data-i18n="hot_h2">Nejvíce propojené soubory</h2>
+        <p data-i18n="hot_desc">Orientační vstupní body do projektu podle počtu nalezených vztahů.</p>
         <div class="stack" id="hotlist"></div>
       </section>
 
-      <!-- 9. DATA PRO AI KONTEXT -->
+      <!-- 9. DATA PRO AI -->
       <section class="panel" id="data">
-        <h2>Data pro dokumentaci a AI kontext</h2>
-        <p>Graf a zdrojové důkazy lze uložit a číst i strojově. Export neodesílá data na server; výběr toho, co dáš AI nebo zveřejníš, zůstává na tobě.</p>
+        <h2 data-i18n="data_h2">Data pro dokumentaci a AI kontext</h2>
+        <p data-i18n="data_desc">Graf a zdrojové důkazy lze uložit a číst i strojově. Export neodesílá data na server.</p>
         <div class="btnrow">
           <a href="./graph-index.json" download>⬇ Graph JSON</a>
           <a href="./source-index.json" download>⬇ File index JSON</a>
           <a href="./ARCHITECTURE_OVERVIEW.md" download>⬇ Architektura Markdown</a>
           <a href="./GRAPH_COVERAGE_REPORT.md" download>⬇ Report pokrytí</a>
-          <button id="exportContext">✨ Export kontextu vybraného souboru</button>
+          <button id="exportContext" data-i18n="btn_export_ctx">✨ Export kontextu vybraného souboru</button>
         </div>
       </section>
 
-      <footer>Universal Code Atlas · V0-first reconstruction · nezávislý komunitní nástroj. Původní grafický engine zůstal zachován.</footer>
+      <footer data-i18n="footer_text">Universal Code Atlas · V0-first reconstruction · nezávislý komunitní nástroj. Původní grafický engine zůstal zachován.</footer>
     </main>
   </div>
 
   <script src="./portal.js"></script>
   <script>
     (function () {
-      const VISIBLE_LIMIT = 5;
+      /* =========================================================
+         1. OFFLINE MULTILANG SYSTÉM (CS / EN / AR + RTL PODPORA)
+         ========================================================= */
+      const I18N = {
+        cs: {
+          dir: 'ltr',
+          nav_atlas: '🌌 Interaktivní 2D/3D atlas',
+          nav_graph: 'Klasický graf',
+          nav_inside: '🧬 Inside File',
+          nav_timeline: '🕒 Git evoluce',
+          nav_export: '⬇ Export grafu JSON',
+          nav_thanks: '💛 Poděkování',
+          aside_title: 'Obsah projektu',
+          menu_about: 'Přehled',
+          menu_files: '📁 File Explorer a zdrojáky',
+          menu_arch: 'Architektura a vazby',
+          menu_topo: 'Síť závislostí',
+          menu_build: 'Build kontext',
+          menu_php: 'PHP verze',
+          menu_tools: 'Verze jazyků',
+          menu_hotspots: 'Klíčové soubory',
+          menu_data: 'Důkazy a AI kontext',
+          aside_note: 'Automaticky generovaný obsah vychází ze skutečných souborů a staticky nalezených vztahů. Nejde o běhovou stopu ani záruku úplnosti.',
+          hero_caps: 'Průvodce zdrojovým kódem',
+          hero_desc: 'Otevřený průzkumník architektury. Od projektu → k modulu → k souboru → ke konkrétní vazbě a zdrojovému důkazu.',
+          hero_notice: '🔎 Proč je něco propojené? Otevři Atlas, klikni na hranu a zobraz si přesnou evidenci. Neověřené a dynamické vazby mohou chybět — Atlas je nesmí domýšlet.',
+          files_h2: 'Zdrojové soubory · úplný File Explorer',
+          files_desc: 'Výchozí pohled je zaměřen na modul examples/llama.android. Rozbal složky nebo vyhledej cestu, třídu či název.',
+          btn_only_llama: 'Pouze llama.android',
+          btn_all_repo: 'Zobrazen celý repozitář',
+          btn_search_llama: '🔍 Vyhledat v llama.android',
+          search_placeholder: 'Hledej soubor nebo symbol…',
+          btn_more: 'Načíst další výsledky',
+          tree_summary: '📁 Strom projektu',
+          select_file: 'Vyber soubor',
+          btn_atlas_links: '🌌 Zobrazit vazby v Atlasu',
+          btn_inside_file: '🧬 Vnitřní graf souboru',
+          btn_save: '💾 Uložit soubor',
+          btn_copy: '📋 Kopírovat',
+          arch_h2: 'Skutečná struktura projektu',
+          btn_folders: '📁 Adresářové oblasti',
+          btn_modules: '📦 Adresáře s build manifesty',
+          arch_tech: 'Zjištěné technologie a evidence',
+          arch_links: 'Vazby mezi oblastmi (směr od → k)',
+          topo_h2: 'Topologie doložených závislostí',
+          topo_desc: 'Samostatné pohledy na potvrzené statické vazby a možné dynamické cíle. Komponenty grafu nejsou automaticky architektonické moduly.',
+          topo_regions: 'Provázané součásti (potvrzené vztahy)',
+          topo_cycles: 'Cyklické souborové závislosti',
+          topo_cross: 'Mezijazykové vazby s důkazy',
+          topo_caps: 'Skutečné pokrytí jazykových analyzátorů',
+          build_h2: 'Build kontext · Gradle / Maven / Android / CMake',
+          build_desc: 'Staticky doložené deklarace a možné návaznosti. Zjištěné varianty nejsou totéž jako vyhodnocená konfigurace buildu.',
+          build_variants: 'Android source sety a možné build varianty',
+          build_variants_desc: 'Kandidátní model odvozený z doslovných deklarací v Gradlu.',
+          php_h2: 'PHP Version & Resources Info',
+          php_desc: 'Offline přehled deklarovaných PHP verzí. Composer a PHP se při této kontrole nespouštějí.',
+          php_official: '↗ Oficiální podpora PHP',
+          tools_h2: 'Language & Toolchain Versions — offline přehled',
+          tools_desc: 'Deklarace z projektu nejsou důkazem nainstalovaných nástrojů ani nasazených verzí.',
+          tools_json: '⬇ Report jazykových a build verzí JSON',
+          hot_h2: 'Nejvíce propojené soubory',
+          hot_desc: 'Orientační vstupní body do projektu podle počtu nalezených vztahů.',
+          data_h2: 'Data pro dokumentaci a AI kontext',
+          data_desc: 'Graf a zdrojové důkazy lze uložit a číst i strojově. Export neodesílá data na server.',
+          btn_export_ctx: '✨ Export kontextu vybraného souboru',
+          footer_text: 'Universal Code Atlas · V0-first reconstruction · nezávislý komunitní nástroj. Původní grafický engine zůstal zachován.',
+          filter_placeholder: '🔎 Filtrovat v tomto seznamu…',
+          show_all: 'Zobrazit všechny položky',
+          collapse_list: 'Sbalit seznam'
+        },
+        en: {
+          dir: 'ltr',
+          nav_atlas: '🌌 Interactive 2D/3D Atlas',
+          nav_graph: 'Classic Graph',
+          nav_inside: '🧬 Inside File',
+          nav_timeline: '🕒 Git Evolution',
+          nav_export: '⬇ Export Graph JSON',
+          nav_thanks: '💛 Thanks',
+          aside_title: 'Project Contents',
+          menu_about: 'Overview',
+          menu_files: '📁 File Explorer & Source',
+          menu_arch: 'Architecture & Links',
+          menu_topo: 'Dependency Network',
+          menu_build: 'Build Context',
+          menu_php: 'PHP Version',
+          menu_tools: 'Language Versions',
+          menu_hotspots: 'Key Hotspots',
+          menu_data: 'Evidence & AI Context',
+          aside_note: 'Auto-generated content derived from actual files and statically detected relations. Not a runtime trace or completeness guarantee.',
+          hero_caps: 'Source Code Guide',
+          hero_desc: 'Open architecture explorer. From project → to module → to file → to concrete dependency and source evidence.',
+          hero_notice: '🔎 Why are two nodes connected? Open Atlas, click an edge to inspect exact evidence. Unverified dynamic links may be omitted.',
+          files_h2: 'Source Files · Full File Explorer',
+          files_desc: 'Default view is scoped to examples/llama.android. Expand folders or search by path, class, or symbol name.',
+          btn_only_llama: 'Only llama.android',
+          btn_all_repo: 'Showing full repository',
+          btn_search_llama: '🔍 Search in llama.android',
+          search_placeholder: 'Search file or symbol…',
+          btn_more: 'Load more results',
+          tree_summary: '📁 Project Tree',
+          select_file: 'Select a file',
+          btn_atlas_links: '🌌 View links in Atlas',
+          btn_inside_file: '🧬 Inside File Graph',
+          btn_save: '💾 Save file',
+          btn_copy: '📋 Copy',
+          arch_h2: 'Actual Project Structure',
+          btn_folders: '📁 Directory Areas',
+          btn_modules: '📦 Build Manifest Modules',
+          arch_tech: 'Detected Technologies & Evidence',
+          arch_links: 'Inter-area Links (from → to)',
+          topo_h2: 'Verified Dependency Topology',
+          topo_desc: 'Separate views of confirmed static links and potential dynamic targets. Graph components are not necessarily architectural modules.',
+          topo_regions: 'Connected Components (Verified)',
+          topo_cycles: 'Cyclic File Dependencies',
+          topo_cross: 'Cross-Language Links with Evidence',
+          topo_caps: 'Language Analyzer Coverage',
+          build_h2: 'Build Context · Gradle / Maven / Android / CMake',
+          build_desc: 'Statically evidenced declarations and build links. Detected variants differ from an evaluated build model.',
+          build_variants: 'Android Source Sets & Build Variants',
+          build_variants_desc: 'Candidate model derived from literal Gradle declarations.',
+          php_h2: 'PHP Version & Resources Info',
+          php_desc: 'Offline overview of declared PHP versions. Composer and PHP are not executed during this scan.',
+          php_official: '↗ Official PHP Support',
+          tools_h2: 'Language & Toolchain Versions — Offline Overview',
+          tools_desc: 'Project declarations do not prove installed tools or deployed runtime versions.',
+          tools_json: '⬇ Download Toolchain Version Report JSON',
+          hot_h2: 'Most Connected Files (Hotspots)',
+          hot_desc: 'Entry points into the codebase ranked by detected relation count.',
+          data_h2: 'Documentation & AI Context Data',
+          data_desc: 'Graph and source evidence can be exported for machine or AI consumption. Zero data is sent to any server.',
+          btn_export_ctx: '✨ Export Selected File Context',
+          footer_text: 'Universal Code Atlas · V0-first reconstruction · independent community tool. Original graph engine preserved.',
+          filter_placeholder: '🔎 Filter this list…',
+          show_all: 'Show all items',
+          collapse_list: 'Collapse list'
+        },
+        ar: {
+          dir: 'rtl',
+          nav_atlas: '🌌 أطلس تفاعلي 2D/3D',
+          nav_graph: 'الرسم البياني الكلاسيكي',
+          nav_inside: '🧬 داخل الملف',
+          nav_timeline: '🕒 تطور Git',
+          nav_export: '⬇ تصدير JSON',
+          nav_thanks: '💛 شكر وتقدير',
+          aside_title: 'محتويات المشروع',
+          menu_about: 'نظرة عامة',
+          menu_files: '📁 مستكشف الملفات والكود',
+          menu_arch: 'البنية والروابط',
+          menu_topo: 'شبكة الاعتماديات',
+          menu_build: 'سياق البناء (Build)',
+          menu_php: 'إصدار PHP',
+          menu_tools: 'إصدارات اللغات',
+          menu_hotspots: 'الملفات الأكثر ارتباطاً',
+          menu_data: 'الأدلة وسياق الذكاء الاصطناعي',
+          aside_note: 'محتوى مُولّد تلقائياً من الملفات الفعلية والعلاقات المكتشفة استاتيكياً. لا يمثل تتبعاً وقت التشغيل.',
+          hero_caps: 'دليل الكود المصدري',
+          hero_desc: 'مستكشف مفتوح للبنية البرمجية. من المشروع ← إلى الوحدة ← إلى الملف ← إلى الدليل المصدري المحدد.',
+          hero_notice: '🔎 لماذا هذا الارتباط موجود؟ افتح الأطلس واضغط على الرابط لعرض الدليل الدقيق.',
+          files_h2: 'الملفات المصدرية · مستكشف الملفات الكامل',
+          files_desc: 'العرض الافتراضي يركز على وحدة examples/llama.android. افتح المجلدات أو ابحث عن مسار أو رمز.',
+          btn_only_llama: 'llama.android فقط',
+          btn_all_repo: 'عرض المستودع بالكامل',
+          btn_search_llama: '🔍 بحث في llama.android',
+          search_placeholder: 'ابحث عن ملف أو رمز…',
+          btn_more: 'تحميل المزيد من النتائج',
+          tree_summary: '📁 شجرة المشروع',
+          select_file: 'اختر ملفاً',
+          btn_atlas_links: '🌌 عرض الروابط في الأطلس',
+          btn_inside_file: '🧬 الرسم الداخلي للملف',
+          btn_save: '💾 حفظ الملف',
+          btn_copy: '📋 نسخ',
+          arch_h2: 'البنية الفعلية للمشروع',
+          btn_folders: '📁 مجالات المجلدات',
+          btn_modules: '📦 وحدات البناء',
+          arch_tech: 'التقنيات المكتشفة والأدلة',
+          arch_links: 'الروابط بين المجالات',
+          topo_h2: 'طوبولوجيا الاعتماديات الموثقة',
+          topo_desc: 'عرض منفصل للروابط الاستاتيكية المؤكدة والأهداف الديناميكية المحتملة.',
+          topo_regions: 'المكونات المترابطة',
+          topo_cycles: 'الاعتماديات الدائرية للملفات',
+          topo_cross: 'الروابط بين اللغات المختلفة',
+          topo_caps: 'تغطية محللات اللغات',
+          build_h2: 'سياق البناء · Gradle / Maven / Android / CMake',
+          build_desc: 'التصريحات الموثقة استاتيكياً والارتباطات المحتملة في إعدادات البناء.',
+          build_variants: 'مجموعات مصادر Android ومتغيرات البناء',
+          build_variants_desc: 'نموذج مرشح مستنتج من تصريحات Gradle.',
+          php_h2: 'معلومات إصدار PHP والموارد',
+          php_desc: 'نظرة عامة بدون اتصال لإصدارات PHP المصرح بها.',
+          php_official: '↗ الدعم الرسمي لـ PHP',
+          tools_h2: 'إصدارات اللغات والأدوات — نظرة عامة',
+          tools_desc: 'التصريحات في المشروع لا تثبت الأدوات المثبتة فعلياً.',
+          tools_json: '⬇ تقرير إصدارات الأدوات JSON',
+          hot_h2: 'الملفات الأكثر ارتباطاً',
+          hot_desc: 'نقاط الدخول الرئيسية للمشروع حسب عدد العلاقات المكتشفة.',
+          data_h2: 'بيانات التوثيق وسياق الذكاء الاصطناعي',
+          data_desc: 'يمكن تصدير الرسم البياني والأدلة للقراءة الآلية دون إرسال أي بيانات إلى الخادم.',
+          btn_export_ctx: '✨ تصدير سياق الملف المحدد',
+          footer_text: 'Universal Code Atlas · أداة مجتمعية مستقلة. تم الحفاظ على محرك الرسوميات الأصلي.',
+          filter_placeholder: '🔎 تصفية هذه القائمة…',
+          show_all: 'عرض جميع العناصر',
+          collapse_list: 'طي القائمة'
+        }
+      };
+
+      let currentLang = localStorage.getItem('uca_lang') || 'cs';
+      if (!I18N[currentLang]) currentLang = 'cs';
       let onlyLlamaActive = true;
 
-      // Bezpečné vytvoření DOM elementu bez innerHTML injekce
+      function t(key) {
+        return (I18N[currentLang] && I18N[currentLang][key]) || I18N.cs[key] || key;
+      }
+
+      function applyLanguage(lang) {
+        if (!I18N[lang]) return;
+        currentLang = lang;
+        localStorage.setItem('uca_lang', lang);
+
+        document.documentElement.lang = lang;
+        document.documentElement.dir = I18N[lang].dir;
+
+        document.querySelectorAll('.lang-btn').forEach((btn) => {
+          btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
+        });
+
+        document.querySelectorAll('[data-i18n]').forEach((node) => {
+          const key = node.getAttribute('data-i18n');
+          if (key === 'btn_only_llama') {
+            node.textContent = onlyLlamaActive ? t('btn_only_llama') : t('btn_all_repo');
+          } else {
+            node.textContent = t(key);
+          }
+        });
+
+        const fileSearch = document.getElementById('fileSearch');
+        if (fileSearch) fileSearch.placeholder = t('search_placeholder');
+
+        document.querySelectorAll('.stack-filter').forEach((inp) => {
+          inp.placeholder = t('filter_placeholder');
+        });
+
+        enhanceStacks();
+      }
+
+      document.querySelectorAll('.lang-btn').forEach((btn) => {
+        btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+      });
+
+      /* =========================================================
+         2. LOGIKA PRO LLAMA.ANDROID A MODERNÍ FORMÁTOVÁNÍ KARET
+         ========================================================= */
+      const VISIBLE_LIMIT = 5;
+
       function el(tag, className, text) {
         const node = document.createElement(tag);
         if (className) node.className = className;
@@ -703,32 +956,18 @@
         return node;
       }
 
-      // 1. Izolace a rozbalení stromu examples/llama.android
       function syncLlamaTree() {
         const tree = document.getElementById('fileTree');
         if (!tree) return;
-
         tree.classList.toggle('only-llama', onlyLlamaActive);
-        const topDetails = Array.from(tree.children).filter((n) => n.tagName === 'DETAILS');
-
-        topDetails.forEach((det) => {
-          const summary = det.querySelector(':scope > summary');
-          const label = (summary?.textContent || '').trim();
+        Array.from(tree.children).filter((n) => n.tagName === 'DETAILS').forEach((det) => {
+          const label = (det.querySelector(':scope > summary')?.textContent || '').trim();
           if (label.includes('examples') || label.includes('llama.android')) {
             det.setAttribute('data-llama-root', '1');
             det.open = true;
-
-            // Rozbalíme podsložky vedoucí přímo k llama.android
             det.querySelectorAll('details').forEach((sub) => {
               const subText = (sub.querySelector(':scope > summary')?.textContent || '').trim();
-              if (
-                subText.includes('llama.android') ||
-                subText === 'app' ||
-                subText === 'src' ||
-                subText === 'main' ||
-                subText === 'java' ||
-                subText === 'cpp'
-              ) {
+              if (['llama.android', 'app', 'src', 'main', 'java', 'cpp'].some((k) => subText.includes(k))) {
                 sub.open = true;
               }
             });
@@ -736,7 +975,6 @@
         });
       }
 
-      // 2. Filtrování sekcí mimo llama.android (pokud je režim zapnutý)
       function applyLlamaScopeFilter() {
         const targets = document.querySelectorAll('#areas > *, #ecosystems > *, #buildEdges > *, #variantInfo > *, #hotlist > *');
         targets.forEach((item) => {
@@ -745,7 +983,6 @@
             return;
           }
           const txt = (item.textContent || '').toLowerCase();
-          // Ponecháme položky týkající se llama.android, androidu, gradlu nebo kořene projektu
           const isRelevant =
             txt.includes('llama.android') ||
             txt.includes('(kořen') ||
@@ -756,11 +993,9 @@
         });
       }
 
-      // 3. Moderní přeformátování cyklických závislostí na přehledné pilulky
       function formatCycleCards() {
         const container = document.getElementById('topologyCycles');
         if (!container) return;
-
         Array.from(container.children).forEach((card) => {
           if (card.dataset.fmtDone === '1') return;
           const raw = (card.textContent || '').trim();
@@ -774,7 +1009,7 @@
           card.textContent = '';
 
           const head = el('div', 'fmt-cycle-head');
-          head.appendChild(el('span', '', `🔄 Cyklický řetězec závislostí (${nodes.length} souborů)`));
+          head.appendChild(el('span', '', `🔄 Cycle (${nodes.length} files)`));
           card.appendChild(head);
 
           const chain = el('div', 'fmt-cycle-chain');
@@ -789,77 +1024,59 @@
             pill.appendChild(el('span', '', folderHint || '/'));
             chain.appendChild(pill);
 
-            if (i < nodes.length - 1) {
-              chain.appendChild(el('span', 'fmt-arrow', '↔'));
-            }
+            if (i < nodes.length - 1) chain.appendChild(el('span', 'fmt-arrow', '↔'));
           });
           card.appendChild(chain);
         });
       }
 
-      // 4. Moderní přeformátování řádkových karet (CMake, Gradle, Hotspots, Toolchain)
       function formatRowCards() {
-        const selectors = ['#ecosystems', '#variantInfo', '#toolVersionEvidence', '#hotlist'];
-        selectors.forEach((sel) => {
+        ['#ecosystems', '#variantInfo', '#toolVersionEvidence', '#hotlist'].forEach((sel) => {
           const container = document.querySelector(sel);
           if (!container) return;
-
           Array.from(container.children).forEach((card) => {
             if (card.dataset.fmtDone === '1') return;
-            const lines = (card.innerText || card.textContent || '')
-              .split('\n')
-              .map((l) => l.trim())
-              .filter(Boolean);
+            const lines = (card.innerText || card.textContent || '').split('\n').map((l) => l.trim()).filter(Boolean);
+            if (!lines.length) return;
 
-            if (lines.length === 0) return;
             card.dataset.fmtDone = '1';
             card.className = 'fmt-row';
             card.textContent = '';
 
             const mainCol = el('div', 'fmt-row-main');
             const firstLine = lines[0];
+            const relMatch = firstLine.match(/^(.*?)\s*·\s*(\d+\s*\w+)$/i);
 
-            // Detekce počtu vztahů u hotspotů (např. "soubor.kt · 205 vztahů")
-            const relMatch = firstLine.match(/^(.*?)\s*·\s*(\d+\s*vztah\w*)$/i);
             if (relMatch) {
-              const pathParts = relMatch[1].split('/');
-              const fName = pathParts.pop() || relMatch[1];
+              const fName = relMatch[1].split('/').pop() || relMatch[1];
               mainCol.appendChild(el('span', 'fmt-row-title', fName));
               mainCol.appendChild(el('span', 'fmt-row-sub', relMatch[1]));
               card.appendChild(mainCol);
               card.appendChild(el('span', 'fmt-tag', relMatch[2]));
             } else {
               mainCol.appendChild(el('span', 'fmt-row-title', firstLine));
-              if (lines[1]) {
-                mainCol.appendChild(el('span', 'fmt-row-sub', lines.slice(1).join(' · ')));
-              }
+              if (lines[1]) mainCol.appendChild(el('span', 'fmt-row-sub', lines.slice(1).join(' · ')));
               card.appendChild(mainCol);
-
-              // Extrakce typu souboru (CMakeLists.txt, build.gradle.kts apod.) jako odznak
               const fileBadge = (lines[1] || '').split('/').pop();
-              if (fileBadge && fileBadge.length < 28) {
-                card.appendChild(el('span', 'fmt-tag', fileBadge));
-              }
+              if (fileBadge && fileBadge.length < 28) card.appendChild(el('span', 'fmt-tag', fileBadge));
             }
           });
         });
       }
 
-      // 5. Chytré zkracování dlouhých seznamů + živý vyhledávací filtr
       function enhanceStacks() {
         document.querySelectorAll('.stack').forEach((stack) => {
           const allChildren = Array.from(stack.children);
           const visibleItems = allChildren.filter((c) => !c.classList.contains('is-llama-hidden'));
           const count = visibleItems.length;
 
-          // Přidání vyhledávacího pole nad seznam, pokud má > 6 položek
           if (allChildren.length > 6 && !stack.dataset.hasToolbar) {
             stack.dataset.hasToolbar = '1';
             const toolbar = el('div', 'stack-toolbar');
             const filter = document.createElement('input');
             filter.type = 'search';
             filter.className = 'stack-filter';
-            filter.placeholder = '🔎 Filtrovat v tomto seznamu…';
+            filter.placeholder = t('filter_placeholder');
             filter.addEventListener('input', () => {
               const q = filter.value.toLowerCase().trim();
               if (q) stack.classList.remove('is-collapsed');
@@ -889,31 +1106,28 @@
                   (c) => !c.classList.contains('is-llama-hidden')
                 ).length;
                 toggleBtn.textContent = isCollapsed
-                  ? `Zobrazit všechny položky (${currentVisible})`
-                  : 'Sbalit seznam';
+                  ? `${t('show_all')} (${currentVisible})`
+                  : t('collapse_list');
               });
               stack.after(toggleBtn);
             }
             toggleBtn.textContent = stack.classList.contains('is-collapsed')
-              ? `Zobrazit všechny položky (${count})`
-              : 'Sbalit seznam';
+              ? `${t('show_all')} (${count})`
+              : t('collapse_list');
           } else if (hasBtn) {
             toggleBtn.remove();
           }
         });
       }
 
-      // Ovládací prvky kontextu llama.android
       const toggleModeBtn = document.getElementById('toggleLlamaMode');
       const scopeStatus = document.getElementById('scopeStatus');
       if (toggleModeBtn) {
         toggleModeBtn.addEventListener('click', () => {
           onlyLlamaActive = !onlyLlamaActive;
           toggleModeBtn.setAttribute('aria-pressed', String(onlyLlamaActive));
-          toggleModeBtn.textContent = onlyLlamaActive ? 'Pouze llama.android' : 'Zobrazen celý repozitář';
-          scopeStatus.textContent = onlyLlamaActive
-            ? '🎯 Aktivní kontext: examples/llama.android'
-            : '🌐 Aktivní kontext: celý repozitář';
+          toggleModeBtn.textContent = onlyLlamaActive ? t('btn_only_llama') : t('btn_all_repo');
+          scopeStatus.textContent = onlyLlamaActive ? '🎯 examples/llama.android' : '🌐 Full Repository';
           syncLlamaTree();
           applyLlamaScopeFilter();
           enhanceStacks();
@@ -930,7 +1144,6 @@
         });
       }
 
-      // Kopírování zdrojového kódu
       const copyBtn = document.getElementById('copySource');
       if (copyBtn) {
         copyBtn.addEventListener('click', async () => {
@@ -938,12 +1151,11 @@
           if (!code || code.startsWith('Zde se zobrazí')) return;
           await navigator.clipboard.writeText(code);
           const old = copyBtn.textContent;
-          copyBtn.textContent = '✅ Zkopírováno';
-          setTimeout(() => (copyBtn.textContent = old), 1600);
+          copyBtn.textContent = '✅';
+          setTimeout(() => (copyBtn.textContent = old), 1400);
         });
       }
 
-      // Sledování dynamických změn z portal.js
       let scheduled = false;
       const runAllEnhancements = () => {
         scheduled = false;
@@ -962,9 +1174,11 @@
       });
 
       observer.observe(document.querySelector('main'), { childList: true, subtree: true });
-      window.addEventListener('DOMContentLoaded', runAllEnhancements);
+      window.addEventListener('DOMContentLoaded', () => {
+        applyLanguage(currentLang);
+        runAllEnhancements();
+      });
 
-      // Zvýraznění aktivní sekce v menu při scrollování
       const navLinks = Array.from(document.querySelectorAll('#sideNav a'));
       const sections = navLinks.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
       window.addEventListener('scroll', () => {
