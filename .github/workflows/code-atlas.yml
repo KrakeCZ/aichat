@@ -42,7 +42,7 @@ jobs:
           test -s "$RUNNER_TEMP/code-atlas-site/atlas-v2.html"
           test -s "$RUNNER_TEMP/code-atlas-site/graph.html"
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: ${{ runner.temp }}/code-atlas-site
       - id: deploy
