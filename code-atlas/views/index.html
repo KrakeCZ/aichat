@@ -1,27 +1,1197 @@
 <!doctype html>
-<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Universal Code Atlas — Developer Encyclopedia</title>
-<style>
-:root{--bg:#080e19;--panel:#121e30;--card:#18283e;--border:#30445f;--text:#edf4ff;--muted:#acbed5;--blue:#7dbfff;--good:#76ddbd}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 system-ui,Segoe UI,sans-serif}a{color:var(--blue)}button,input{color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px 12px;font:inherit}button{cursor:pointer}button:hover{border-color:var(--blue)}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#111c2d;border-bottom:1px solid var(--border);padding:14px 22px}header strong{font-size:19px}.dim,small{color:var(--muted)}nav{display:flex;flex-wrap:wrap;gap:14px}.layout{display:grid;grid-template-columns:250px minmax(0,1fr)}aside{position:sticky;top:0;height:100vh;overflow:auto;background:#0f1929;border-right:1px solid var(--border);padding:24px 17px}aside a{display:block;padding:8px;border-radius:8px;text-decoration:none}aside a:hover{background:var(--card)}main{max-width:1450px;width:100%;padding:26px;min-width:0}.hero,.panel{background:linear-gradient(115deg,#152640,#101b2b);border:1px solid var(--border);border-radius:15px;padding:24px;margin:0 0 18px}.hero{background:radial-gradient(circle at 95% 5%,#214879 0,#15243a 40%,#101a2b 90%)}h1{font-size:clamp(22px,3vw,36px);line-height:1.25;margin:6px 0 12px}h2{font-size:19px;margin:0 0 12px}h3{font-size:15px;margin:8px 0}p{color:var(--muted)}.caps{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;color:var(--good)}.stats,.areas{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px}.stat,.area,.link,.file{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px}.stat b{display:block;font-size:25px}.area button{padding:5px 9px;font-size:12px}.area small{display:block}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--border);border-radius:20px;padding:4px 9px;color:var(--muted)}.stack{display:grid;gap:8px}.link strong{display:block}.fileBtn{display:block;background:transparent;border:0;width:100%;text-align:left;padding:5px 8px;overflow-wrap:anywhere}.fileBtn:hover{background:#243b58}.fileBtn[aria-current=true]{color:var(--good)}.tree details{padding-left:13px;border-left:1px solid #324865}.tree summary{cursor:pointer;padding:4px;color:var(--muted)}.tree summary:hover{color:var(--blue)}.col2{display:grid;grid-template-columns:minmax(280px,45%) minmax(0,1fr);gap:13px}.box{background:#0b1523;border:1px solid var(--border);border-radius:9px;padding:12px;min-width:0;max-height:560px;overflow:auto}.code{font:12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:auto;tab-size:4;margin:0}.btnrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.notice{border-left:3px solid var(--good);background:#152b35;padding:11px 13px;color:var(--muted)}#fileSearch{width:100%;margin:8px 0}#matches{max-height:260px;overflow:auto}.err{color:#ffb1b9}footer{padding:10px 28px;color:var(--muted)}@media(max-width:850px){.layout{display:block}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border);padding:12px}aside a{display:inline-block}main{padding:12px}.col2{display:block}.col2>*{margin-bottom:12px}.hero,.panel{padding:15px}}
-</style></head><body>
-<header><strong>🕸 Universal Code Atlas <small>· Developer Encyclopedia</small></strong><nav><a href="./atlas-v2.html">🌌 Interaktivní 2D/3D atlas</a><a href="./graph.html">Klasický graf</a><a href="./inside-file.html">🧬 Inside File</a><a href="./timeline.html">🕒 Git evoluce</a><a href="./graph-index.json" download>Export grafu JSON</a><a href="./thanks.html">💛 Poděkování</a></nav></header>
-<div class="layout"><aside><strong>Obsah projektu</strong><a href="#about">Přehled</a><a href="#architecture">Architektura a vazby</a><a href="#topology">Síť závislostí</a><a href="#buildContext">Build kontext</a><a href="#phpVersion">PHP verze</a><a href="#toolVersions">Verze jazyků</a><a href="#files">File Explorer a zdrojáky</a><a href="#hotspots">Klíčové soubory</a><a href="#data">Důkazy a AI kontext</a><p style="font-size:12px">Automaticky generovaný obsah vychází ze skutečných souborů a staticky nalezených vztahů. Nejde o běhovou stopu ani záruku úplnosti.</p></aside>
-<main>
-<section class="hero" id="about"><div class="caps">Průvodce zdrojovým kódem</div><h1 id="project">Načítám projekt…</h1><p>Otevřený průzkumník architektury. Od projektu → k modulu → k souboru → ke konkrétní vazbě a zdrojovému důkazu.</p><div class="stats" id="stats"></div><div class="chips" id="languages" style="margin-top:14px"></div><p class="notice">🔎 Proč je něco propojené? Otevři <a href="./atlas-v2.html">Atlas</a>, klikni na hranu a zobraz si přesnou evidenci. Neověřené a dynamické vazby mohou chybět — Atlas je nesmí domýšlet.</p></section>
-<section class="panel" id="architecture"><h2>Skutečná struktura projektu</h2><p id="architectureNote">Načítám skupiny…</p><div class="btnrow" style="margin:12px 0"><button id="folderView" aria-pressed="false">Adresářové oblasti</button><button id="moduleView" aria-pressed="false">Adresáře s build manifesty</button></div><div class="areas" id="areas"></div><h3>Zjištěné technologie a evidence</h3><div class="stack" id="ecosystems"></div><h3>Vazby mezi oblastmi (směr od → k)</h3><div class="stack" id="areaLinks"></div></section>
-<section class="panel" id="topology"><h2>Topologie doložených závislostí</h2><p>Samostatné pohledy na potvrzené statické vazby a možné dynamické cíle. Komponenty grafu nejsou automaticky architektonické moduly. Pokud vazba chybí, neznamená to nezávislost.</p><div class="stats" id="topologyStats"></div><h3>Provázané součásti (potvrzené vztahy)</h3><div class="stack" id="topologyRegions"></div><h3>Cyklické souborové závislosti</h3><div class="stack" id="topologyCycles"></div><h3>Mezijazykové vazby s důkazy</h3><div class="stack" id="crossLanguages"></div><h3>Skutečné pokrytí jazykových analyzátorů</h3><div class="stack" id="capabilities"></div><div class="btnrow"><a href="./dependency-topology.json" download>Topologie JSON</a><a href="./language-capabilities.json" download>Pokrytí jazyků JSON</a></div></section>
-<section class="panel" id="buildContext"><h2>Build kontext · Gradle / Maven / Android / CMake</h2><p>Staticky doložené deklarace a možné návaznosti. Zjištěné varianty nejsou totéž jako vyhodnocená konfigurace buildu; bez Gradle/Maven modelu nejde zaručit úplný classpath.</p><div class="stats" id="buildStats"></div><div class="stack" id="buildEdges"></div><h3>Android source sety a možné build varianty</h3><p>Jde o kandidátní model odvozený z doslovných deklarací v Gradlu, nikoli o skutečně vyhodnocený AGP model. Označené vzájemně neslučitelné source sety nepředstavují důkaz chybného běhového volání.</p><div class="stats" id="variantStats"></div><div class="stack" id="variantInfo"></div><p><a href="./build-context.json" download>Stáhnout Build Context JSON</a> · <a href="./android-variant-context.json" download>Stáhnout Variant Context JSON</a></p></section>
-<section class="panel" id="phpVersion"><h2>PHP Version &amp; Resources Info</h2>
-<p>Offline přehled deklarovaných PHP verzí. Composer a PHP se při této kontrole nespouštějí. Deklarovaná kompatibilita není verze skutečného serveru.</p>
-<div class="stats" id="phpVersionStats"></div><div class="stack" id="phpVersionRecords"></div>
-<p><a href="./php-version-report.json" download>Stáhnout PHP Version Report JSON</a> ·
-<a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer">Oficiální podpora PHP (odkaz otevřeš sám)</a></p>
-</section>
-<section class="panel" id="toolVersions"><h2>Language &amp; Toolchain Versions — offline přehled</h2>
-<p>Deklarace z projektu nejsou důkazem nainstalovaných nástrojů ani nasazených verzí. Čteme jen metadata z repozitáře; nic nestahujeme ani nespouštíme.</p>
-<div class="stats" id="toolVersionStats"></div><div class="stack" id="toolVersionEvidence"></div>
-<p><a href="./toolchain-version-report.json" download>Stáhnout report jazykových a build verzí JSON</a></p></section>
-<section class="panel" id="files"><h2>Zdrojové soubory · úplný File Explorer</h2><p>Rozbal složky nebo vyhledej cestu, třídu či název. Otevře se celý soubor, nikoli jen ukázka 50 položek.</p><div class="col2"><div><input type="search" id="fileSearch" placeholder="Hledej soubor nebo symbol…" aria-label="Hledat soubory"><div id="matches"></div><button id="more" hidden>Načíst další výsledky</button><details open><summary>📁 Strom projektu</summary><div class="tree" id="fileTree"></div></details></div><div><h3 id="selectedName">Vyber soubor</h3><div class="btnrow"><a id="atlasFileLink" href="./atlas-v2.html">Zobrazit vazby v Atlasu</a><a id="insideFileLink" href="./inside-file.html">🧬 Vnitřní graf souboru</a><button id="saveSource" disabled>Uložit soubor</button><span id="codeState" class="dim"></span></div><div class="box"><pre id="sourcePreview" class="code">Zde se zobrazí zdrojový kód…</pre></div></div></div></section>
-<section class="panel" id="hotspots"><h2>Nejvíce propojené soubory</h2><p>Orientační vstupní body do projektu podle počtu nalezených vztahů. Vysoké číslo samo o sobě není chyba.</p><div class="stack" id="hotlist"></div></section>
-<section class="panel" id="data"><h2>Data pro dokumentaci a AI kontext</h2><p>Graf a zdrojové důkazy lze uložit a číst i strojově. Export neodesílá data na server; výběr toho, co dáš AI nebo zveřejníš, zůstává na tobě.</p><div class="btnrow"><a href="./graph-index.json" download>Graph JSON</a><a href="./source-index.json" download>File index JSON</a><a href="./ARCHITECTURE_OVERVIEW.md" download>Architektura Markdown</a><a href="./GRAPH_COVERAGE_REPORT.md" download>Report pokrytí</a><button id="exportContext">Export kontextu vybraného souboru</button></div></section>
-<footer>Universal Code Atlas · V0-first reconstruction · nezávislý komunitní nástroj. Původní grafický engine zůstal zachován.</footer></main></div>
-<script src="./portal.js"></script></body></html>
+<html lang="cs" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Universal Code Atlas — Developer Encyclopedia</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg-surface: #0c1322;
+      --panel: #10192b;
+      --card: #152238;
+      --card-hover: #1b2c47;
+      --border: #243652;
+      --border-strong: #375178;
+      --text: #eef4fc;
+      --muted: #94a9c6;
+      --blue: #6cb6ff;
+      --blue-soft: rgba(108, 182, 255, 0.12);
+      --good: #56d4b5;
+      --good-soft: rgba(86, 212, 181, 0.11);
+      --warn: #f2b84b;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 7px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.6 var(--sans);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ochrana proti přetékání dlouhých cest na mobilu */
+    h1, h2, h3, p, a, div, span, strong, small, code, li {
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    /* Kód a cesty zůstávají vždy LTR i v arabském RTL režimu */
+    pre, code, .code, .tree, .fmt-pill, .fmt-row-title, .fmt-row-sub, .context-badge, .fileBtn {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    a { color: var(--blue); text-decoration: none; transition: color 0.15s ease; }
+    a:hover { text-decoration: underline; }
+
+    button, input {
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 8px 13px;
+      font: inherit;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    button {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 500;
+      font-size: 13px;
+    }
+    button:hover:not(:disabled) { border-color: var(--blue); background: var(--card-hover); }
+    button[aria-pressed="true"] {
+      background: var(--blue-soft);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    /* Horní lišta */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: rgba(12, 19, 34, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 13px 22px;
+    }
+    header strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+    .dim, small { color: var(--muted); font-weight: 400; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Přepínač jazyků CS / EN / AR */
+    .lang-switcher {
+      display: inline-flex;
+      align-items: center;
+      background: #09101d;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: 0;
+      border-radius: 7px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .lang-btn:hover { background: var(--card); color: var(--text); }
+    .lang-btn[aria-pressed="true"] {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    nav a {
+      padding: 6px 11px;
+      border-radius: var(--radius-sm);
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    nav a:hover {
+      border-color: var(--blue);
+      background: var(--card-hover);
+      color: var(--blue);
+    }
+
+    /* Layout (podporuje automaticky LTR i RTL přes logical properties) */
+    .layout {
+      display: grid;
+      grid-template-columns: 255px minmax(0, 1fr);
+      max-width: 1660px;
+      margin: 0 auto;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--bg-surface);
+      border-inline-end: 1px solid var(--border);
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    aside > strong {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      padding: 0 10px 8px;
+    }
+    aside a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    aside a:hover { background: var(--card); color: var(--text); }
+    aside a.active { background: var(--blue-soft); color: var(--blue); }
+    aside p {
+      margin-top: auto;
+      padding: 11px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1400px;
+      width: 100%;
+      padding: 22px 26px;
+      min-width: 0;
+    }
+
+    .hero, .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      margin: 0 0 20px;
+      scroll-margin-top: 18px;
+    }
+    .hero {
+      background: radial-gradient(circle at 96% 4%, #1b3c69 0%, #111e33 45%, #0d1524 100%);
+      border-color: var(--border-strong);
+    }
+
+    h1 { font-size: clamp(23px, 3vw, 35px); line-height: 1.2; margin: 6px 0 10px; letter-spacing: -0.02em; }
+    h2 { font-size: 18.5px; margin: 0 0 8px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin: 20px 0 10px; }
+    p { color: var(--muted); margin: 0 0 12px; }
+
+    .caps { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--good); }
+
+    .areas-wrapper { container-type: inline-size; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .areas {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 11px;
+    }
+    @container (max-width: 540px) {
+      .areas { grid-template-columns: 1fr; }
+    }
+
+    .stat, .area, .link, .file {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 13px 14px;
+      min-width: 0;
+      content-visibility: auto;
+      contain-intrinsic-size: 72px;
+    }
+    .area:hover, .link:hover, .file:hover { border-color: var(--border-strong); }
+    .stat b { display: block; font-size: 25px; line-height: 1.2; color: var(--text); }
+
+    .area strong, .link strong, .file strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .area button { margin-top: 9px; padding: 6px 10px; font-size: 12px; width: 100%; }
+    .area small { display: block; margin-top: 4px; }
+
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip {
+      background: rgba(11, 18, 32, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-family: var(--mono);
+      color: var(--muted);
+    }
+
+    .context-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #0b1322;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      margin-bottom: 14px;
+    }
+    .context-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--good);
+      font-weight: 600;
+    }
+
+    .stack { display: grid; gap: 8px; }
+    .stack.is-collapsed > *:nth-child(n+6) { display: none !important; }
+    .is-llama-hidden { display: none !important; }
+
+    .fmt-cycle {
+      background: #0c1424;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      content-visibility: auto;
+      contain-intrinsic-size: 110px;
+    }
+    .fmt-cycle-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--warn);
+    }
+    .fmt-cycle-chain {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      direction: ltr;
+    }
+    .fmt-pill {
+      display: inline-flex;
+      flex-direction: column;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 4px 9px;
+      font-family: var(--mono);
+      max-width: 100%;
+    }
+    .fmt-pill b { font-size: 12px; color: var(--text); font-weight: 600; }
+    .fmt-pill span { font-size: 10.5px; color: var(--muted); }
+    .fmt-arrow { color: var(--blue); font-size: 12px; user-select: none; }
+
+    .fmt-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 11px 14px;
+      content-visibility: auto;
+      contain-intrinsic-size: 56px;
+    }
+    .fmt-row-main { min-width: 0; flex: 1 1 240px; }
+    .fmt-row-title { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text); display: block; }
+    .fmt-row-sub { font-family: var(--mono); font-size: 11.5px; color: var(--muted); display: block; margin-top: 2px; }
+    .fmt-tag {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      border: 1px solid rgba(108, 182, 255, 0.25);
+      white-space: nowrap;
+    }
+
+    .stack-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
+    .stack-filter { flex: 1 1 220px; max-width: 400px; background: #080d17; padding: 7px 11px; font-size: 13px; }
+    .stack-toggle { margin-top: 8px; width: 100%; background: rgba(255, 255, 255, 0.025); border-style: dashed; color: var(--blue); }
+
+    /* File Explorer */
+    .col2 {
+      display: grid;
+      grid-template-columns: minmax(290px, 38%) minmax(0, 1fr);
+      gap: 15px;
+      align-items: start;
+    }
+    .fileBtn {
+      display: block;
+      background: transparent;
+      border: 0;
+      width: 100%;
+      text-align: left;
+      justify-content: flex-start;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+    .fileBtn:hover { background: var(--card-hover); }
+    .fileBtn[aria-current="true"] { background: var(--good-soft); color: var(--good); font-weight: 600; }
+
+    .tree { max-height: 470px; overflow-y: auto; padding-right: 4px; }
+    .tree details { padding-left: 13px; border-left: 1px solid var(--border); margin-left: 4px; }
+    .tree summary {
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 6px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12.5px;
+    }
+    .tree summary:hover { color: var(--blue); background: rgba(255, 255, 255, 0.03); }
+
+    .tree.only-llama > details:not([data-llama-root]),
+    .tree.only-llama > button.fileBtn {
+      display: none;
+    }
+
+    .box {
+      background: #080d17;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      min-width: 0;
+      max-height: 560px;
+      overflow: auto;
+      margin-top: 10px;
+    }
+    .code {
+      font: 12.5px/1.6 var(--mono);
+      white-space: pre;
+      overflow-x: auto;
+      tab-size: 4;
+      margin: 0;
+      color: #e4edff;
+    }
+
+    .btnrow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .btnrow a {
+      padding: 7px 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .btnrow a:hover { border-color: var(--blue); background: var(--card-hover); }
+
+    .notice {
+      border-inline-start: 3px solid var(--good);
+      background: var(--good-soft);
+      border-radius: var(--radius-md);
+      padding: 11px 14px;
+      color: var(--text);
+      margin-top: 14px;
+      font-size: 13.5px;
+    }
+
+    #fileSearch { width: 100%; margin: 0 0 8px; background: #080d17; padding: 9px 12px; }
+    #matches { max-height: 250px; overflow-y: auto; margin-bottom: 8px; }
+    .err { color: #ffb1b9; }
+
+    footer {
+      padding: 16px 26px 28px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { display: block; }
+      aside {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        overflow-x: auto;
+        white-space: nowrap;
+        border-inline-end: 0;
+        border-bottom: 1px solid var(--border);
+        padding: 9px 12px;
+        gap: 6px;
+        background: rgba(12, 19, 34, 0.96);
+        backdrop-filter: blur(10px);
+        -webkit-overflow-scrolling: touch;
+      }
+      aside > strong, aside p { display: none; }
+      aside a {
+        flex: 0 0 auto;
+        padding: 6px 10px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        font-size: 12.5px;
+      }
+      main { padding: 12px; }
+      .hero, .panel { padding: 15px; border-radius: 12px; scroll-margin-top: 54px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .col2 { display: block; }
+      .col2 > * { margin-bottom: 14px; }
+      header { padding: 12px 14px; }
+      nav { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+      nav a { flex: 0 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>🕸 Universal Code Atlas <small>· Developer Encyclopedia</small></strong>
+    <div class="header-right">
+      <!-- Real-time offline přepínač jazyků CS / EN / AR -->
+      <div class="lang-switcher" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn" data-lang="cs" aria-pressed="true" title="Čeština">🇨🇿 CS</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English">🇬🇧 EN</button>
+        <button type="button" class="lang-btn" data-lang="ar" aria-pressed="false" title="العربية">🇸🇦 AR</button>
+      </div>
+      <nav>
+        <a href="./atlas-v2.html" data-i18n="nav_atlas">🌌 Interaktivní 2D/3D atlas</a>
+        <a href="./graph.html" data-i18n="nav_graph">Klasický graf</a>
+        <a href="./inside-file.html" data-i18n="nav_inside">🧬 Inside File</a>
+        <a href="./timeline.html" data-i18n="nav_timeline">🕒 Git evoluce</a>
+        <a href="./graph-index.json" download data-i18n="nav_export">⬇ Export grafu JSON</a>
+        <a href="./thanks.html" data-i18n="nav_thanks">💛 Poděkování</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside id="sideNav">
+      <strong data-i18n="aside_title">Obsah projektu</strong>
+      <a href="#about" data-i18n="menu_about">Přehled</a>
+      <a href="#files" data-i18n="menu_files">📁 File Explorer a zdrojáky</a>
+      <a href="#architecture" data-i18n="menu_arch">Architektura a vazby</a>
+      <a href="#topology" data-i18n="menu_topo">Síť závislostí</a>
+      <a href="#buildContext" data-i18n="menu_build">Build kontext</a>
+      <a href="#phpVersion" data-i18n="menu_php">PHP verze</a>
+      <a href="#toolVersions" data-i18n="menu_tools">Verze jazyků</a>
+      <a href="#hotspots" data-i18n="menu_hotspots">Klíčové soubory</a>
+      <a href="#data" data-i18n="menu_data">Důkazy a AI kontext</a>
+      <p data-i18n="aside_note">Automaticky generovaný obsah vychází ze skutečných souborů a staticky nalezených vztahů. Nejde o běhovou stopu ani záruku úplnosti.</p>
+    </aside>
+
+    <main>
+      <!-- 1. PŘEHLED -->
+      <section class="hero" id="about">
+        <div class="caps" data-i18n="hero_caps">Průvodce zdrojovým kódem</div>
+        <h1 id="project">Načítám projekt…</h1>
+        <p data-i18n="hero_desc">Otevřený průzkumník architektury. Od projektu → k modulu → k souboru → ke konkrétní vazbě a zdrojovému důkazu.</p>
+        <div class="stats" id="stats"></div>
+        <div class="chips" id="languages" style="margin-top:14px"></div>
+        <p class="notice" data-i18n="hero_notice">🔎 Proč je něco propojené? Otevři Atlas, klikni na hranu a zobraz si přesnou evidenci. Neověřené a dynamické vazby mohou chybět — Atlas je nesmí domýšlet.</p>
+      </section>
+
+      <!-- 2. ZDROJOVÉ SOUBORY -->
+      <section class="panel" id="files">
+        <h2 data-i18n="files_h2">Zdrojové soubory · úplný File Explorer</h2>
+        <p data-i18n="files_desc">Výchozí pohled je zaměřen na modul examples/llama.android. Rozbal složky nebo vyhledej cestu, třídu či název.</p>
+
+        <div class="context-bar">
+          <span class="context-badge" id="scopeStatus">🎯 examples/llama.android</span>
+          <div class="btnrow">
+            <button type="button" id="toggleLlamaMode" aria-pressed="true" data-i18n="btn_only_llama">Pouze llama.android</button>
+            <button type="button" id="filterSearchLlama" data-i18n="btn_search_llama">🔍 Vyhledat v llama.android</button>
+          </div>
+        </div>
+
+        <div class="col2">
+          <div>
+            <input type="search" id="fileSearch" placeholder="Hledej soubor nebo symbol…" aria-label="Hledat soubory">
+            <div id="matches"></div>
+            <button id="more" hidden data-i18n="btn_more">Načíst další výsledky</button>
+            <details open>
+              <summary style="cursor:pointer;font-weight:600;padding:5px 0" data-i18n="tree_summary">📁 Strom projektu</summary>
+              <div class="tree only-llama" id="fileTree"></div>
+            </details>
+          </div>
+          <div>
+            <h3 id="selectedName" style="text-transform:none;color:var(--text);font-size:15px;margin-top:0" data-i18n="select_file">Vyber soubor</h3>
+            <div class="btnrow">
+              <a id="atlasFileLink" href="./atlas-v2.html" data-i18n="btn_atlas_links">🌌 Zobrazit vazby v Atlasu</a>
+              <a id="insideFileLink" href="./inside-file.html" data-i18n="btn_inside_file">🧬 Vnitřní graf souboru</a>
+              <button id="saveSource" disabled data-i18n="btn_save">💾 Uložit soubor</button>
+              <button id="copySource" type="button" data-i18n="btn_copy">📋 Kopírovat</button>
+              <span id="codeState" class="dim"></span>
+            </div>
+            <div class="box"><pre id="sourcePreview" class="code">Zde se zobrazí zdrojový kód…</pre></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. ARCHITEKTURA -->
+      <section class="panel" id="architecture">
+        <h2 data-i18n="arch_h2">Skutečná struktura projektu</h2>
+        <p id="architectureNote">Načítám skupiny…</p>
+        <div class="btnrow" style="margin:12px 0">
+          <button id="folderView" aria-pressed="false" data-i18n="btn_folders">📁 Adresářové oblasti</button>
+          <button id="moduleView" aria-pressed="false" data-i18n="btn_modules">📦 Adresáře s build manifesty</button>
+        </div>
+        <div class="areas-wrapper"><div class="areas" id="areas"></div></div>
+        <h3 data-i18n="arch_tech">Zjištěné technologie a evidence</h3>
+        <div class="stack" id="ecosystems"></div>
+        <h3 data-i18n="arch_links">Vazby mezi oblastmi (směr od → k)</h3>
+        <div class="stack" id="areaLinks"></div>
+      </section>
+
+      <!-- 4. TOPOLOGIE -->
+      <section class="panel" id="topology">
+        <h2 data-i18n="topo_h2">Topologie doložených závislostí</h2>
+        <p data-i18n="topo_desc">Samostatné pohledy na potvrzené statické vazby a možné dynamické cíle. Komponenty grafu nejsou automaticky architektonické moduly.</p>
+        <div class="stats" id="topologyStats"></div>
+        <h3 data-i18n="topo_regions">Provázané součásti (potvrzené vztahy)</h3>
+        <div class="stack" id="topologyRegions"></div>
+        <h3 data-i18n="topo_cycles">Cyklické souborové závislosti</h3>
+        <div class="stack" id="topologyCycles"></div>
+        <h3 data-i18n="topo_cross">Mezijazykové vazby s důkazy</h3>
+        <div class="stack" id="crossLanguages"></div>
+        <h3 data-i18n="topo_caps">Skutečné pokrytí jazykových analyzátorů</h3>
+        <div class="stack" id="capabilities"></div>
+        <div class="btnrow" style="margin-top:14px">
+          <a href="./dependency-topology.json" download>⬇ Topologie JSON</a>
+          <a href="./language-capabilities.json" download>⬇ Pokrytí jazyků JSON</a>
+        </div>
+      </section>
+
+      <!-- 5. BUILD KONTEXT -->
+      <section class="panel" id="buildContext">
+        <h2 data-i18n="build_h2">Build kontext · Gradle / Maven / Android / CMake</h2>
+        <p data-i18n="build_desc">Staticky doložené deklarace a možné návaznosti. Zjištěné varianty nejsou totéž jako vyhodnocená konfigurace buildu.</p>
+        <div class="stats" id="buildStats"></div>
+        <div class="stack" id="buildEdges"></div>
+        <h3 data-i18n="build_variants">Android source sety a možné build varianty</h3>
+        <p data-i18n="build_variants_desc">Kandidátní model odvozený z doslovných deklarací v Gradlu.</p>
+        <div class="stats" id="variantStats"></div>
+        <div class="stack" id="variantInfo"></div>
+        <div class="btnrow" style="margin-top:14px">
+          <a href="./build-context.json" download>⬇ Build Context JSON</a>
+          <a href="./android-variant-context.json" download>⬇ Variant Context JSON</a>
+        </div>
+      </section>
+
+      <!-- 6. PHP VERZE -->
+      <section class="panel" id="phpVersion">
+        <h2 data-i18n="php_h2">PHP Version &amp; Resources Info</h2>
+        <p data-i18n="php_desc">Offline přehled deklarovaných PHP verzí. Composer a PHP se při této kontrole nespouštějí.</p>
+        <div class="stats" id="phpVersionStats"></div>
+        <div class="stack" id="phpVersionRecords"></div>
+        <div class="btnrow" style="margin-top:14px">
+          <a href="./php-version-report.json" download>⬇ PHP Version Report JSON</a>
+          <a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer" data-i18n="php_official">↗ Oficiální podpora PHP</a>
+        </div>
+      </section>
+
+      <!-- 7. VERZE JAZYKŮ -->
+      <section class="panel" id="toolVersions">
+        <h2 data-i18n="tools_h2">Language &amp; Toolchain Versions — offline přehled</h2>
+        <p data-i18n="tools_desc">Deklarace z projektu nejsou důkazem nainstalovaných nástrojů ani nasazených verzí.</p>
+        <div class="stats" id="toolVersionStats"></div>
+        <div class="stack" id="toolVersionEvidence"></div>
+        <div class="btnrow" style="margin-top:14px">
+          <a href="./toolchain-version-report.json" download data-i18n="tools_json">⬇ Report jazykových a build verzí JSON</a>
+        </div>
+      </section>
+
+      <!-- 8. KLÍČOVÉ SOUBORY -->
+      <section class="panel" id="hotspots">
+        <h2 data-i18n="hot_h2">Nejvíce propojené soubory</h2>
+        <p data-i18n="hot_desc">Orientační vstupní body do projektu podle počtu nalezených vztahů.</p>
+        <div class="stack" id="hotlist"></div>
+      </section>
+
+      <!-- 9. DATA PRO AI -->
+      <section class="panel" id="data">
+        <h2 data-i18n="data_h2">Data pro dokumentaci a AI kontext</h2>
+        <p data-i18n="data_desc">Graf a zdrojové důkazy lze uložit a číst i strojově. Export neodesílá data na server.</p>
+        <div class="btnrow">
+          <a href="./graph-index.json" download>⬇ Graph JSON</a>
+          <a href="./source-index.json" download>⬇ File index JSON</a>
+          <a href="./ARCHITECTURE_OVERVIEW.md" download>⬇ Architektura Markdown</a>
+          <a href="./GRAPH_COVERAGE_REPORT.md" download>⬇ Report pokrytí</a>
+          <button id="exportContext" data-i18n="btn_export_ctx">✨ Export kontextu vybraného souboru</button>
+        </div>
+      </section>
+
+      <footer data-i18n="footer_text">Universal Code Atlas · V0-first reconstruction · nezávislý komunitní nástroj. Původní grafický engine zůstal zachován.</footer>
+    </main>
+  </div>
+
+  <script src="./portal.js"></script>
+  <script>
+    (function () {
+      /* =========================================================
+         1. OFFLINE MULTILANG SYSTÉM (CS / EN / AR + RTL PODPORA)
+         ========================================================= */
+      const I18N = {
+        cs: {
+          dir: 'ltr',
+          nav_atlas: '🌌 Interaktivní 2D/3D atlas',
+          nav_graph: 'Klasický graf',
+          nav_inside: '🧬 Inside File',
+          nav_timeline: '🕒 Git evoluce',
+          nav_export: '⬇ Export grafu JSON',
+          nav_thanks: '💛 Poděkování',
+          aside_title: 'Obsah projektu',
+          menu_about: 'Přehled',
+          menu_files: '📁 File Explorer a zdrojáky',
+          menu_arch: 'Architektura a vazby',
+          menu_topo: 'Síť závislostí',
+          menu_build: 'Build kontext',
+          menu_php: 'PHP verze',
+          menu_tools: 'Verze jazyků',
+          menu_hotspots: 'Klíčové soubory',
+          menu_data: 'Důkazy a AI kontext',
+          aside_note: 'Automaticky generovaný obsah vychází ze skutečných souborů a staticky nalezených vztahů. Nejde o běhovou stopu ani záruku úplnosti.',
+          hero_caps: 'Průvodce zdrojovým kódem',
+          hero_desc: 'Otevřený průzkumník architektury. Od projektu → k modulu → k souboru → ke konkrétní vazbě a zdrojovému důkazu.',
+          hero_notice: '🔎 Proč je něco propojené? Otevři Atlas, klikni na hranu a zobraz si přesnou evidenci. Neověřené a dynamické vazby mohou chybět — Atlas je nesmí domýšlet.',
+          files_h2: 'Zdrojové soubory · úplný File Explorer',
+          files_desc: 'Výchozí pohled je zaměřen na modul examples/llama.android. Rozbal složky nebo vyhledej cestu, třídu či název.',
+          btn_only_llama: 'Pouze llama.android',
+          btn_all_repo: 'Zobrazen celý repozitář',
+          btn_search_llama: '🔍 Vyhledat v llama.android',
+          search_placeholder: 'Hledej soubor nebo symbol…',
+          btn_more: 'Načíst další výsledky',
+          tree_summary: '📁 Strom projektu',
+          select_file: 'Vyber soubor',
+          btn_atlas_links: '🌌 Zobrazit vazby v Atlasu',
+          btn_inside_file: '🧬 Vnitřní graf souboru',
+          btn_save: '💾 Uložit soubor',
+          btn_copy: '📋 Kopírovat',
+          arch_h2: 'Skutečná struktura projektu',
+          btn_folders: '📁 Adresářové oblasti',
+          btn_modules: '📦 Adresáře s build manifesty',
+          arch_tech: 'Zjištěné technologie a evidence',
+          arch_links: 'Vazby mezi oblastmi (směr od → k)',
+          topo_h2: 'Topologie doložených závislostí',
+          topo_desc: 'Samostatné pohledy na potvrzené statické vazby a možné dynamické cíle. Komponenty grafu nejsou automaticky architektonické moduly.',
+          topo_regions: 'Provázané součásti (potvrzené vztahy)',
+          topo_cycles: 'Cyklické souborové závislosti',
+          topo_cross: 'Mezijazykové vazby s důkazy',
+          topo_caps: 'Skutečné pokrytí jazykových analyzátorů',
+          build_h2: 'Build kontext · Gradle / Maven / Android / CMake',
+          build_desc: 'Staticky doložené deklarace a možné návaznosti. Zjištěné varianty nejsou totéž jako vyhodnocená konfigurace buildu.',
+          build_variants: 'Android source sety a možné build varianty',
+          build_variants_desc: 'Kandidátní model odvozený z doslovných deklarací v Gradlu.',
+          php_h2: 'PHP Version & Resources Info',
+          php_desc: 'Offline přehled deklarovaných PHP verzí. Composer a PHP se při této kontrole nespouštějí.',
+          php_official: '↗ Oficiální podpora PHP',
+          tools_h2: 'Language & Toolchain Versions — offline přehled',
+          tools_desc: 'Deklarace z projektu nejsou důkazem nainstalovaných nástrojů ani nasazených verzí.',
+          tools_json: '⬇ Report jazykových a build verzí JSON',
+          hot_h2: 'Nejvíce propojené soubory',
+          hot_desc: 'Orientační vstupní body do projektu podle počtu nalezených vztahů.',
+          data_h2: 'Data pro dokumentaci a AI kontext',
+          data_desc: 'Graf a zdrojové důkazy lze uložit a číst i strojově. Export neodesílá data na server.',
+          btn_export_ctx: '✨ Export kontextu vybraného souboru',
+          footer_text: 'Universal Code Atlas · V0-first reconstruction · nezávislý komunitní nástroj. Původní grafický engine zůstal zachován.',
+          filter_placeholder: '🔎 Filtrovat v tomto seznamu…',
+          show_all: 'Zobrazit všechny položky',
+          collapse_list: 'Sbalit seznam'
+        },
+        en: {
+          dir: 'ltr',
+          nav_atlas: '🌌 Interactive 2D/3D Atlas',
+          nav_graph: 'Classic Graph',
+          nav_inside: '🧬 Inside File',
+          nav_timeline: '🕒 Git Evolution',
+          nav_export: '⬇ Export Graph JSON',
+          nav_thanks: '💛 Thanks',
+          aside_title: 'Project Contents',
+          menu_about: 'Overview',
+          menu_files: '📁 File Explorer & Source',
+          menu_arch: 'Architecture & Links',
+          menu_topo: 'Dependency Network',
+          menu_build: 'Build Context',
+          menu_php: 'PHP Version',
+          menu_tools: 'Language Versions',
+          menu_hotspots: 'Key Hotspots',
+          menu_data: 'Evidence & AI Context',
+          aside_note: 'Auto-generated content derived from actual files and statically detected relations. Not a runtime trace or completeness guarantee.',
+          hero_caps: 'Source Code Guide',
+          hero_desc: 'Open architecture explorer. From project → to module → to file → to concrete dependency and source evidence.',
+          hero_notice: '🔎 Why are two nodes connected? Open Atlas, click an edge to inspect exact evidence. Unverified dynamic links may be omitted.',
+          files_h2: 'Source Files · Full File Explorer',
+          files_desc: 'Default view is scoped to examples/llama.android. Expand folders or search by path, class, or symbol name.',
+          btn_only_llama: 'Only llama.android',
+          btn_all_repo: 'Showing full repository',
+          btn_search_llama: '🔍 Search in llama.android',
+          search_placeholder: 'Search file or symbol…',
+          btn_more: 'Load more results',
+          tree_summary: '📁 Project Tree',
+          select_file: 'Select a file',
+          btn_atlas_links: '🌌 View links in Atlas',
+          btn_inside_file: '🧬 Inside File Graph',
+          btn_save: '💾 Save file',
+          btn_copy: '📋 Copy',
+          arch_h2: 'Actual Project Structure',
+          btn_folders: '📁 Directory Areas',
+          btn_modules: '📦 Build Manifest Modules',
+          arch_tech: 'Detected Technologies & Evidence',
+          arch_links: 'Inter-area Links (from → to)',
+          topo_h2: 'Verified Dependency Topology',
+          topo_desc: 'Separate views of confirmed static links and potential dynamic targets. Graph components are not necessarily architectural modules.',
+          topo_regions: 'Connected Components (Verified)',
+          topo_cycles: 'Cyclic File Dependencies',
+          topo_cross: 'Cross-Language Links with Evidence',
+          topo_caps: 'Language Analyzer Coverage',
+          build_h2: 'Build Context · Gradle / Maven / Android / CMake',
+          build_desc: 'Statically evidenced declarations and build links. Detected variants differ from an evaluated build model.',
+          build_variants: 'Android Source Sets & Build Variants',
+          build_variants_desc: 'Candidate model derived from literal Gradle declarations.',
+          php_h2: 'PHP Version & Resources Info',
+          php_desc: 'Offline overview of declared PHP versions. Composer and PHP are not executed during this scan.',
+          php_official: '↗ Official PHP Support',
+          tools_h2: 'Language & Toolchain Versions — Offline Overview',
+          tools_desc: 'Project declarations do not prove installed tools or deployed runtime versions.',
+          tools_json: '⬇ Download Toolchain Version Report JSON',
+          hot_h2: 'Most Connected Files (Hotspots)',
+          hot_desc: 'Entry points into the codebase ranked by detected relation count.',
+          data_h2: 'Documentation & AI Context Data',
+          data_desc: 'Graph and source evidence can be exported for machine or AI consumption. Zero data is sent to any server.',
+          btn_export_ctx: '✨ Export Selected File Context',
+          footer_text: 'Universal Code Atlas · V0-first reconstruction · independent community tool. Original graph engine preserved.',
+          filter_placeholder: '🔎 Filter this list…',
+          show_all: 'Show all items',
+          collapse_list: 'Collapse list'
+        },
+        ar: {
+          dir: 'rtl',
+          nav_atlas: '🌌 أطلس تفاعلي 2D/3D',
+          nav_graph: 'الرسم البياني الكلاسيكي',
+          nav_inside: '🧬 داخل الملف',
+          nav_timeline: '🕒 تطور Git',
+          nav_export: '⬇ تصدير JSON',
+          nav_thanks: '💛 شكر وتقدير',
+          aside_title: 'محتويات المشروع',
+          menu_about: 'نظرة عامة',
+          menu_files: '📁 مستكشف الملفات والكود',
+          menu_arch: 'البنية والروابط',
+          menu_topo: 'شبكة الاعتماديات',
+          menu_build: 'سياق البناء (Build)',
+          menu_php: 'إصدار PHP',
+          menu_tools: 'إصدارات اللغات',
+          menu_hotspots: 'الملفات الأكثر ارتباطاً',
+          menu_data: 'الأدلة وسياق الذكاء الاصطناعي',
+          aside_note: 'محتوى مُولّد تلقائياً من الملفات الفعلية والعلاقات المكتشفة استاتيكياً. لا يمثل تتبعاً وقت التشغيل.',
+          hero_caps: 'دليل الكود المصدري',
+          hero_desc: 'مستكشف مفتوح للبنية البرمجية. من المشروع ← إلى الوحدة ← إلى الملف ← إلى الدليل المصدري المحدد.',
+          hero_notice: '🔎 لماذا هذا الارتباط موجود؟ افتح الأطلس واضغط على الرابط لعرض الدليل الدقيق.',
+          files_h2: 'الملفات المصدرية · مستكشف الملفات الكامل',
+          files_desc: 'العرض الافتراضي يركز على وحدة examples/llama.android. افتح المجلدات أو ابحث عن مسار أو رمز.',
+          btn_only_llama: 'llama.android فقط',
+          btn_all_repo: 'عرض المستودع بالكامل',
+          btn_search_llama: '🔍 بحث في llama.android',
+          search_placeholder: 'ابحث عن ملف أو رمز…',
+          btn_more: 'تحميل المزيد من النتائج',
+          tree_summary: '📁 شجرة المشروع',
+          select_file: 'اختر ملفاً',
+          btn_atlas_links: '🌌 عرض الروابط في الأطلس',
+          btn_inside_file: '🧬 الرسم الداخلي للملف',
+          btn_save: '💾 حفظ الملف',
+          btn_copy: '📋 نسخ',
+          arch_h2: 'البنية الفعلية للمشروع',
+          btn_folders: '📁 مجالات المجلدات',
+          btn_modules: '📦 وحدات البناء',
+          arch_tech: 'التقنيات المكتشفة والأدلة',
+          arch_links: 'الروابط بين المجالات',
+          topo_h2: 'طوبولوجيا الاعتماديات الموثقة',
+          topo_desc: 'عرض منفصل للروابط الاستاتيكية المؤكدة والأهداف الديناميكية المحتملة.',
+          topo_regions: 'المكونات المترابطة',
+          topo_cycles: 'الاعتماديات الدائرية للملفات',
+          topo_cross: 'الروابط بين اللغات المختلفة',
+          topo_caps: 'تغطية محللات اللغات',
+          build_h2: 'سياق البناء · Gradle / Maven / Android / CMake',
+          build_desc: 'التصريحات الموثقة استاتيكياً والارتباطات المحتملة في إعدادات البناء.',
+          build_variants: 'مجموعات مصادر Android ومتغيرات البناء',
+          build_variants_desc: 'نموذج مرشح مستنتج من تصريحات Gradle.',
+          php_h2: 'معلومات إصدار PHP والموارد',
+          php_desc: 'نظرة عامة بدون اتصال لإصدارات PHP المصرح بها.',
+          php_official: '↗ الدعم الرسمي لـ PHP',
+          tools_h2: 'إصدارات اللغات والأدوات — نظرة عامة',
+          tools_desc: 'التصريحات في المشروع لا تثبت الأدوات المثبتة فعلياً.',
+          tools_json: '⬇ تقرير إصدارات الأدوات JSON',
+          hot_h2: 'الملفات الأكثر ارتباطاً',
+          hot_desc: 'نقاط الدخول الرئيسية للمشروع حسب عدد العلاقات المكتشفة.',
+          data_h2: 'بيانات التوثيق وسياق الذكاء الاصطناعي',
+          data_desc: 'يمكن تصدير الرسم البياني والأدلة للقراءة الآلية دون إرسال أي بيانات إلى الخادم.',
+          btn_export_ctx: '✨ تصدير سياق الملف المحدد',
+          footer_text: 'Universal Code Atlas · أداة مجتمعية مستقلة. تم الحفاظ على محرك الرسوميات الأصلي.',
+          filter_placeholder: '🔎 تصفية هذه القائمة…',
+          show_all: 'عرض جميع العناصر',
+          collapse_list: 'طي القائمة'
+        }
+      };
+
+      let currentLang = localStorage.getItem('uca_lang') || 'cs';
+      if (!I18N[currentLang]) currentLang = 'cs';
+      let onlyLlamaActive = true;
+
+      function t(key) {
+        return (I18N[currentLang] && I18N[currentLang][key]) || I18N.cs[key] || key;
+      }
+
+      function applyLanguage(lang) {
+        if (!I18N[lang]) return;
+        currentLang = lang;
+        localStorage.setItem('uca_lang', lang);
+
+        document.documentElement.lang = lang;
+        document.documentElement.dir = I18N[lang].dir;
+
+        document.querySelectorAll('.lang-btn').forEach((btn) => {
+          btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
+        });
+
+        document.querySelectorAll('[data-i18n]').forEach((node) => {
+          const key = node.getAttribute('data-i18n');
+          if (key === 'btn_only_llama') {
+            node.textContent = onlyLlamaActive ? t('btn_only_llama') : t('btn_all_repo');
+          } else {
+            node.textContent = t(key);
+          }
+        });
+
+        const fileSearch = document.getElementById('fileSearch');
+        if (fileSearch) fileSearch.placeholder = t('search_placeholder');
+
+        document.querySelectorAll('.stack-filter').forEach((inp) => {
+          inp.placeholder = t('filter_placeholder');
+        });
+
+        enhanceStacks();
+      }
+
+      document.querySelectorAll('.lang-btn').forEach((btn) => {
+        btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+      });
+
+      /* =========================================================
+         2. LOGIKA PRO LLAMA.ANDROID A MODERNÍ FORMÁTOVÁNÍ KARET
+         ========================================================= */
+      const VISIBLE_LIMIT = 5;
+
+      function el(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined && text !== null) node.textContent = text;
+        return node;
+      }
+
+      function syncLlamaTree() {
+        const tree = document.getElementById('fileTree');
+        if (!tree) return;
+        tree.classList.toggle('only-llama', onlyLlamaActive);
+        Array.from(tree.children).filter((n) => n.tagName === 'DETAILS').forEach((det) => {
+          const label = (det.querySelector(':scope > summary')?.textContent || '').trim();
+          if (label.includes('examples') || label.includes('llama.android')) {
+            det.setAttribute('data-llama-root', '1');
+            det.open = true;
+            det.querySelectorAll('details').forEach((sub) => {
+              const subText = (sub.querySelector(':scope > summary')?.textContent || '').trim();
+              if (['llama.android', 'app', 'src', 'main', 'java', 'cpp'].some((k) => subText.includes(k))) {
+                sub.open = true;
+              }
+            });
+          }
+        });
+      }
+
+      function applyLlamaScopeFilter() {
+        const targets = document.querySelectorAll('#areas > *, #ecosystems > *, #buildEdges > *, #variantInfo > *, #hotlist > *');
+        targets.forEach((item) => {
+          if (!onlyLlamaActive) {
+            item.classList.remove('is-llama-hidden');
+            return;
+          }
+          const txt = (item.textContent || '').toLowerCase();
+          const isRelevant =
+            txt.includes('llama.android') ||
+            txt.includes('(kořen') ||
+            txt.includes('další skupiny') ||
+            txt.includes('android') ||
+            txt.includes('gradle');
+          item.classList.toggle('is-llama-hidden', !isRelevant);
+        });
+      }
+
+      function formatCycleCards() {
+        const container = document.getElementById('topologyCycles');
+        if (!container) return;
+        Array.from(container.children).forEach((card) => {
+          if (card.dataset.fmtDone === '1') return;
+          const raw = (card.textContent || '').trim();
+          if (!raw.includes('↔') && !raw.includes('→')) return;
+
+          const nodes = raw.split(/↔|→/).map((s) => s.trim()).filter(Boolean);
+          if (nodes.length < 2) return;
+
+          card.dataset.fmtDone = '1';
+          card.className = 'fmt-cycle';
+          card.textContent = '';
+
+          const head = el('div', 'fmt-cycle-head');
+          head.appendChild(el('span', '', `🔄 Cycle (${nodes.length} files)`));
+          card.appendChild(head);
+
+          const chain = el('div', 'fmt-cycle-chain');
+          nodes.forEach((fullPath, i) => {
+            const parts = fullPath.split('/');
+            const fileName = parts.pop() || fullPath;
+            const folderHint = parts.slice(-2).join('/');
+
+            const pill = el('div', 'fmt-pill');
+            pill.title = fullPath;
+            pill.appendChild(el('b', '', fileName));
+            pill.appendChild(el('span', '', folderHint || '/'));
+            chain.appendChild(pill);
+
+            if (i < nodes.length - 1) chain.appendChild(el('span', 'fmt-arrow', '↔'));
+          });
+          card.appendChild(chain);
+        });
+      }
+
+      function formatRowCards() {
+        ['#ecosystems', '#variantInfo', '#toolVersionEvidence', '#hotlist'].forEach((sel) => {
+          const container = document.querySelector(sel);
+          if (!container) return;
+          Array.from(container.children).forEach((card) => {
+            if (card.dataset.fmtDone === '1') return;
+            const lines = (card.innerText || card.textContent || '').split('\n').map((l) => l.trim()).filter(Boolean);
+            if (!lines.length) return;
+
+            card.dataset.fmtDone = '1';
+            card.className = 'fmt-row';
+            card.textContent = '';
+
+            const mainCol = el('div', 'fmt-row-main');
+            const firstLine = lines[0];
+            const relMatch = firstLine.match(/^(.*?)\s*·\s*(\d+\s*\w+)$/i);
+
+            if (relMatch) {
+              const fName = relMatch[1].split('/').pop() || relMatch[1];
+              mainCol.appendChild(el('span', 'fmt-row-title', fName));
+              mainCol.appendChild(el('span', 'fmt-row-sub', relMatch[1]));
+              card.appendChild(mainCol);
+              card.appendChild(el('span', 'fmt-tag', relMatch[2]));
+            } else {
+              mainCol.appendChild(el('span', 'fmt-row-title', firstLine));
+              if (lines[1]) mainCol.appendChild(el('span', 'fmt-row-sub', lines.slice(1).join(' · ')));
+              card.appendChild(mainCol);
+              const fileBadge = (lines[1] || '').split('/').pop();
+              if (fileBadge && fileBadge.length < 28) card.appendChild(el('span', 'fmt-tag', fileBadge));
+            }
+          });
+        });
+      }
+
+      function enhanceStacks() {
+        document.querySelectorAll('.stack').forEach((stack) => {
+          const allChildren = Array.from(stack.children);
+          const visibleItems = allChildren.filter((c) => !c.classList.contains('is-llama-hidden'));
+          const count = visibleItems.length;
+
+          if (allChildren.length > 6 && !stack.dataset.hasToolbar) {
+            stack.dataset.hasToolbar = '1';
+            const toolbar = el('div', 'stack-toolbar');
+            const filter = document.createElement('input');
+            filter.type = 'search';
+            filter.className = 'stack-filter';
+            filter.placeholder = t('filter_placeholder');
+            filter.addEventListener('input', () => {
+              const q = filter.value.toLowerCase().trim();
+              if (q) stack.classList.remove('is-collapsed');
+              Array.from(stack.children).forEach((item) => {
+                const match = !q || (item.textContent || '').toLowerCase().includes(q);
+                item.style.display = match ? '' : 'none';
+              });
+            });
+            toolbar.appendChild(filter);
+            stack.before(toolbar);
+          }
+
+          let toggleBtn = stack.nextElementSibling;
+          const hasBtn = toggleBtn && toggleBtn.classList.contains('stack-toggle');
+
+          if (count > VISIBLE_LIMIT) {
+            if (!stack.dataset.initCollapse) {
+              stack.classList.add('is-collapsed');
+              stack.dataset.initCollapse = '1';
+            }
+            if (!hasBtn) {
+              toggleBtn = el('button', 'stack-toggle');
+              toggleBtn.type = 'button';
+              toggleBtn.addEventListener('click', () => {
+                const isCollapsed = stack.classList.toggle('is-collapsed');
+                const currentVisible = Array.from(stack.children).filter(
+                  (c) => !c.classList.contains('is-llama-hidden')
+                ).length;
+                toggleBtn.textContent = isCollapsed
+                  ? `${t('show_all')} (${currentVisible})`
+                  : t('collapse_list');
+              });
+              stack.after(toggleBtn);
+            }
+            toggleBtn.textContent = stack.classList.contains('is-collapsed')
+              ? `${t('show_all')} (${count})`
+              : t('collapse_list');
+          } else if (hasBtn) {
+            toggleBtn.remove();
+          }
+        });
+      }
+
+      const toggleModeBtn = document.getElementById('toggleLlamaMode');
+      const scopeStatus = document.getElementById('scopeStatus');
+      if (toggleModeBtn) {
+        toggleModeBtn.addEventListener('click', () => {
+          onlyLlamaActive = !onlyLlamaActive;
+          toggleModeBtn.setAttribute('aria-pressed', String(onlyLlamaActive));
+          toggleModeBtn.textContent = onlyLlamaActive ? t('btn_only_llama') : t('btn_all_repo');
+          scopeStatus.textContent = onlyLlamaActive ? '🎯 examples/llama.android' : '🌐 Full Repository';
+          syncLlamaTree();
+          applyLlamaScopeFilter();
+          enhanceStacks();
+        });
+      }
+
+      const filterSearchBtn = document.getElementById('filterSearchLlama');
+      const fileSearchInput = document.getElementById('fileSearch');
+      if (filterSearchBtn && fileSearchInput) {
+        filterSearchBtn.addEventListener('click', () => {
+          fileSearchInput.value = 'examples/llama.android/';
+          fileSearchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          fileSearchInput.focus();
+        });
+      }
+
+      const copyBtn = document.getElementById('copySource');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          const code = document.getElementById('sourcePreview')?.textContent || '';
+          if (!code || code.startsWith('Zde se zobrazí')) return;
+          await navigator.clipboard.writeText(code);
+          const old = copyBtn.textContent;
+          copyBtn.textContent = '✅';
+          setTimeout(() => (copyBtn.textContent = old), 1400);
+        });
+      }
+
+      let scheduled = false;
+      const runAllEnhancements = () => {
+        scheduled = false;
+        syncLlamaTree();
+        formatCycleCards();
+        formatRowCards();
+        applyLlamaScopeFilter();
+        enhanceStacks();
+      };
+
+      const observer = new MutationObserver(() => {
+        if (!scheduled) {
+          scheduled = true;
+          requestAnimationFrame(runAllEnhancements);
+        }
+      });
+
+      observer.observe(document.querySelector('main'), { childList: true, subtree: true });
+      window.addEventListener('DOMContentLoaded', () => {
+        applyLanguage(currentLang);
+        runAllEnhancements();
+      });
+
+      const navLinks = Array.from(document.querySelectorAll('#sideNav a'));
+      const sections = navLinks.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY + 110;
+        let current = sections[0];
+        for (const sec of sections) {
+          if (sec.offsetTop <= y) current = sec;
+        }
+        navLinks.forEach((a) => {
+          a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
+        });
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
